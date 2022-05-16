@@ -1,65 +1,25 @@
-package com.iudigital.citas.domain;
+package com.iudigital.citas.controller.dto;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
 import com.iudigital.citas.enums.EstadoUsuario;
 import com.iudigital.citas.enums.TipoDocumento;
 
-@Entity
-@Table(name = "usuarios")
-public class Usuario {
+public class UsuarioDTO {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "usuario_id")
 	private int idUsuario;
-	
-	@Column(name = "nombres")
 	private String nombres;
-	
-	@Column(name = "apellidos")
 	private String apellidos;
-	
-	@Enumerated(EnumType.STRING)
-	@Column(name = "tipo_doc")
 	private TipoDocumento tipoDoc;
-	
-	@Column(name = "numero_doc")
 	private String numeroDoc;
-	
-	@Column(name = "fecha_nacimiento")
 	private LocalDate fechaNacimiento;
-	
-	@Column(name = "telefono")
 	private String telefono;
-	
-	@Column(name = "correo")
 	private String correo;
-	
-	@Column(name = "pass")
 	private String pass;
-	
-	@Enumerated(EnumType.STRING)
-	@Column(name = "estado_usuario")
 	private EstadoUsuario estadoUsuario;
-	
-	@Column(name = "especialidad_id")
 	private Integer idEspecialidad;
-	
-	@Column(name = "fecha_creacion")
 	private LocalDateTime fechaCreacion;
-	
-	@Column(name = "fecha_actualizacion")
 	private LocalDateTime fechaActualizacion;
 
 	public int getIdUsuario() {
@@ -165,7 +125,5 @@ public class Usuario {
 	public void setFechaActualizacion(LocalDateTime fechaActualizacion) {
 		this.fechaActualizacion = fechaActualizacion;
 	}
-	
-	
-	
+
 }
