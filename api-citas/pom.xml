@@ -5,21 +5,31 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.6.7</version>
+		<version>2.3.6.RELEASE</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.autoscolombia</groupId>
+	<groupId>com.iudigital.citas</groupId>
 	<artifactId>api-citas</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>api-citas</name>
-	<description>Proyecto citas médicas</description>
+	<description>Proyecto citas medicas</description>
 	<properties>
 		<java.version>11</java.version>
 	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter</artifactId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<!-- version>8.0.25</version> -->
 		</dependency>
 
 		<dependency>
@@ -28,7 +38,8 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-
+	
+	
 	<build>
 		<plugins>
 			<plugin>
