@@ -26,7 +26,7 @@ public class CitaService {
 
 		List<Cita> citasExistentes = citaRepository.findCitasExistentes(cita.getFechaCita(), cita.getIdMedico());
 		Usuario medicoNuevaCita = usuarioRepository.findMedicoById(cita.getIdMedico());
-		
+
 		if (citasExistentes.isEmpty() && !(medicoNuevaCita == null)) {
 
 			cita.setFechaCreacion(LocalDateTime.now());
@@ -36,11 +36,10 @@ public class CitaService {
 
 		} else if (!citasExistentes.isEmpty()) {
 			throw new Exception("Este espacio ya esta ocupado, escoja otra fecha, hora o médico.");
-	
+
 		} else if (medicoNuevaCita == null) {
 			throw new Exception("El médico con Id " + cita.getIdMedico() + " no existe.");
 		}
-
 
 	}
 
@@ -74,10 +73,47 @@ public class CitaService {
 		} else if (fechaNuevaCita.isAfter(LocalDateTime.now().plusDays(1)) == false) {
 			throw new Exception(
 					"No se permite reprogramación, debe ser después del " + LocalDateTime.now().plusDays(1) + ".");
-		} 
-		else if (medicoNuevaCita == null) {
+		} else if (medicoNuevaCita == null) {
 			throw new Exception("El médico con Id " + citaDeseada.getIdMedico() + " no existe.");
 		}
 
 	}
+
+	public List<Cita> getByFechaCitaBetween(LocalDateTime desde, LocalDateTime hasta) {
+		List<Cita> citas = citaRepository.findByfechaCitaBetween(desde, hasta);
+		return citas;
+	}
+
+	public List<Cita> getCitasEstadoPago(EstadoPago estadoPago) {
+		List<Cita> citas = citaRepository.findByestadoPago(estadoPago);
+		return citas;
+
+	}
+
+	public List<Cita> getCitasEstadoAtencion(EstadoAtencion estadoAtencion) {
+		List<Cita> citas = citaRepository.findByestadoAtencion(estadoAtencion);
+		return citas;
+
+	}
+
+	public void cancelarCita(int idCita) throws Exception {
+
+		Cita citaUpdate = citaRepository.findById(idCita).orElse(null);
+
+		if (!(citaUpdate == null) && !(citaUpdate.getEstadoPago().name().equals("PAGADA"))) {
+
+			citaUpdate.setEstadoAtencion(EstadoAtencion.CANCELADA);
+
+			citaRepository.save(citaUpdate);
+			
+		} else if (citaUpdate == null) {
+			throw new Exception("La cita no existe.");
+		} else if (citaUpdate.getEstadoPago().name().equals("PAGADA")) {
+			throw new Exception("No se puede cancelar una cita ya pagada");
+		}
+
+
+
+	}
+
 }
