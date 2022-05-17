@@ -23,42 +23,42 @@ public class Usuario {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "usuario_id")
 	private int idUsuario;
-	
+
 	@Column(name = "nombres")
 	private String nombres;
-	
+
 	@Column(name = "apellidos")
 	private String apellidos;
-	
+
 	@Enumerated(EnumType.STRING)
 	@Column(name = "tipo_doc")
 	private TipoDocumento tipoDoc;
-	
+
 	@Column(name = "numero_doc")
 	private String numeroDoc;
-	
+
 	@Column(name = "fecha_nacimiento")
 	private LocalDate fechaNacimiento;
-	
+
 	@Column(name = "telefono")
 	private String telefono;
-	
+
 	@Column(name = "correo")
 	private String correo;
-	
+
 	@Column(name = "pass")
 	private String pass;
-	
+
 	@Enumerated(EnumType.STRING)
 	@Column(name = "estado_usuario")
 	private EstadoUsuario estadoUsuario;
-	
+
 	@Column(name = "especialidad_id")
 	private Integer idEspecialidad;
-	
+
 	@Column(name = "fecha_creacion")
 	private LocalDateTime fechaCreacion;
-	
+
 	@Column(name = "fecha_actualizacion")
 	private LocalDateTime fechaActualizacion;
 
@@ -165,7 +165,20 @@ public class Usuario {
 	public void setFechaActualizacion(LocalDateTime fechaActualizacion) {
 		this.fechaActualizacion = fechaActualizacion;
 	}
-	
-	
-	
+
+	@Override
+	public String toString() {
+		return "Usuario [idUsuario=" + idUsuario + ", nombres=" + nombres + ", apellidos=" + apellidos + ", tipoDoc="
+				+ tipoDoc + ", numeroDoc=" + numeroDoc + ", fechaNacimiento=" + fechaNacimiento + ", telefono="
+				+ telefono + ", correo=" + correo + ", pass=" + pass + ", estadoUsuario=" + estadoUsuario
+				+ ", idEspecialidad=" + idEspecialidad + ", fechaCreacion=" + fechaCreacion + ", fechaActualizacion="
+				+ fechaActualizacion + ", getIdUsuario()=" + getIdUsuario() + ", getNombres()=" + getNombres()
+				+ ", getApellidos()=" + getApellidos() + ", getTipoDoc()=" + getTipoDoc() + ", getNumeroDoc()="
+				+ getNumeroDoc() + ", getFechaNacimiento()=" + getFechaNacimiento() + ", getTelefono()=" + getTelefono()
+				+ ", getCorreo()=" + getCorreo() + ", getPass()=" + getPass() + ", getEstadoUsuario()="
+				+ getEstadoUsuario() + ", getIdEspecialidad()=" + getIdEspecialidad() + ", getFechaCreacion()="
+				+ getFechaCreacion() + ", getFechaActualizacion()=" + getFechaActualizacion() + ", getClass()="
+				+ getClass() + ", hashCode()=" + hashCode() + ", toString()=" + super.toString() + "]";
+	}
+
 }
