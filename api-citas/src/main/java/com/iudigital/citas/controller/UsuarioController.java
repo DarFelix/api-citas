@@ -31,9 +31,9 @@ public class UsuarioController {
 	@Autowired
 	UsuarioConverter usuarioConverter;
 
-	@PostMapping
+	@PostMapping("/crearMedico")
 	@ResponseStatus(HttpStatus.CREATED)
-	public void createUsuario(@RequestBody UsuarioDTO usuarioDTO) {
+	public void createMedico(@RequestBody UsuarioDTO usuarioDTO) {
 		usuarioService.createUsuario(usuarioConverter.convertUsuarioDTOToUsuario(usuarioDTO));
 	}
 
@@ -48,4 +48,13 @@ public class UsuarioController {
 	public void editUsuario(@PathVariable String numeroDoc, @RequestBody Usuario usuario) throws Exception {
 		usuarioService.editUsuario(numeroDoc, usuario);
 	}
+	
+	@PostMapping("/crearUsuario")
+	@ResponseStatus(HttpStatus.CREATED)
+	public void createUsuario(@RequestBody UsuarioDTO usuarioDTO) {
+		usuarioDTO.setIdEspecialidad(null);
+		usuarioService.createUsuario(usuarioConverter.convertUsuarioDTOToUsuario(usuarioDTO));
+	}
+	
+	
 }

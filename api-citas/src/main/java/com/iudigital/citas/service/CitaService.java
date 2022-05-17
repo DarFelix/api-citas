@@ -115,5 +115,23 @@ public class CitaService {
 
 
 	}
+	
+	public void pagarCita(int idCita) throws Exception {
+		
+		Cita citaUpdate = citaRepository.findById(idCita).orElse(null);
+		
+		if (!(citaUpdate == null) && !(citaUpdate.getEstadoPago().name().equals("PAGADA"))) {
+
+			citaUpdate.setEstadoPago(EstadoPago.PAGADA);
+
+			citaRepository.save(citaUpdate);
+			
+		} else if (citaUpdate == null) {
+			throw new Exception("La cita no existe.");
+		} else if (citaUpdate.getEstadoPago().name().equals("PAGADA")) {
+			throw new Exception("La cita ya fue pagada.");
+		}
+		
+	}
 
 }

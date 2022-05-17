@@ -74,14 +74,17 @@ public class CitaController {
 		return citaService.getCitasEstadoAtencion(estadoAtencion).stream()
 				.map(cita -> citaConverter.convertCitaToCitaDTO(cita)).collect(Collectors.toList());
 	}
-	
+
 	@PutMapping("/cancelarCita/{idCita}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void cambiarEstadoAtencionCita(@PathVariable int idCita) throws Exception {
+	public void cancelarCita(@PathVariable int idCita) throws Exception {
 		citaService.cancelarCita(idCita);
 	}
-	
-	
-	
+
+	@PutMapping("/pagarCita/{idCita}")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void pagarCita(@PathVariable int idCita) throws Exception {
+		citaService.pagarCita(idCita);
+	}
 
 }

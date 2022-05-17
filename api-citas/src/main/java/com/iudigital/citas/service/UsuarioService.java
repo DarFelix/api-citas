@@ -50,7 +50,7 @@ public class UsuarioService {
 
 			usuarioRepository.save(usuarioUpdate);
 		} else {
-			throw new Exception("No existe paciente");
+			throw new Exception("No existe usuario");
 		}
 
 	}
