@@ -27,7 +27,7 @@ public class CitaService {
 		List<Cita> citasExistentes = citaRepository.findCitasExistentes(cita.getFechaCita(), cita.getIdMedico());
 		Usuario medicoNuevaCita = usuarioRepository.findMedicoById(cita.getIdMedico());
 
-		if (citasExistentes.isEmpty() && !(medicoNuevaCita == null)) {
+		if (citasExistentes.isEmpty() && medicoNuevaCita != null) {
 
 			cita.setFechaCreacion(LocalDateTime.now());
 			cita.setEstadoPago(EstadoPago.NO_PAGADA);
@@ -100,7 +100,7 @@ public class CitaService {
 
 		Cita citaUpdate = citaRepository.findById(idCita).orElse(null);
 
-		if (!(citaUpdate == null) && !(citaUpdate.getEstadoPago().name().equals("PAGADA"))) {
+		if (!(citaUpdate == null) && !(citaUpdate.getEstadoPago().equals(EstadoPago.PAGADA))) {
 
 			citaUpdate.setEstadoAtencion(EstadoAtencion.CANCELADA);
 
@@ -108,7 +108,7 @@ public class CitaService {
 			
 		} else if (citaUpdate == null) {
 			throw new Exception("La cita no existe.");
-		} else if (citaUpdate.getEstadoPago().name().equals("PAGADA")) {
+		} else if (citaUpdate.getEstadoPago().equals(EstadoPago.PAGADA)) {
 			throw new Exception("No se puede cancelar una cita ya pagada");
 		}
 

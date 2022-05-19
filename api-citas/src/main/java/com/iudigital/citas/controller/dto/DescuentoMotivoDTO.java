@@ -7,7 +7,7 @@ import com.iudigital.citas.enums.EstadoDescuento;
 public class DescuentoMotivoDTO {
 
 	private int idDescuentoMotivo;
-	private int idMotivo;
+	private MotivoDTO motivo;
 	private int porcentaje;
 	private EstadoDescuento estadoDescuento;
 	private LocalDateTime fechaCreacion;
@@ -21,12 +21,12 @@ public class DescuentoMotivoDTO {
 		this.idDescuentoMotivo = idDescuentoMotivo;
 	}
 
-	public int getIdMotivo() {
-		return idMotivo;
+	public MotivoDTO getMotivoDTO() {
+		return motivo;
 	}
 
-	public void setIdMotivo(int idMotivo) {
-		this.idMotivo = idMotivo;
+	public void setMotivoDTO(MotivoDTO motivo) {
+		this.motivo = motivo;
 	}
 
 	public int getPorcentaje() {

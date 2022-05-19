@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.iudigital.citas.data.DescuentoMotivoRepository;
 import com.iudigital.citas.domain.DescuentoMotivo;
+import com.iudigital.citas.domain.Motivo;
 
 @Service
 public class DescuentoMotivoService {
@@ -31,8 +32,12 @@ public class DescuentoMotivoService {
 		DescuentoMotivo descuentoMotivoUpdate = descuentoMotivoRepository.findById(idDescuentoMotivo).orElse(null);
 
 		if (descuentoMotivoUpdate != null) {
-
-			descuentoMotivoUpdate.setIdMotivo(descuentoMotivo.getIdMotivo());
+			
+			Motivo motivo = new Motivo();
+			motivo.setIdMotivo(descuentoMotivo.getMotivo().getIdMotivo());
+			motivo.setNombre(descuentoMotivo.getMotivo().getNombre());
+			descuentoMotivoUpdate.setMotivo(motivo);
+			
 			descuentoMotivoUpdate.setPorcentaje(descuentoMotivo.getPorcentaje());
 			descuentoMotivoUpdate.setEstadoDescuento(descuentoMotivo.getEstadoDescuento());
 			descuentoMotivoUpdate.setFechaActualizacion(LocalDateTime.now());
