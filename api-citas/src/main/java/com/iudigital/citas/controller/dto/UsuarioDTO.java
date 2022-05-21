@@ -18,7 +18,7 @@ public class UsuarioDTO {
 	private String correo;
 	private String pass;
 	private EstadoUsuario estadoUsuario;
-	private Integer idEspecialidad;
+	private EspecialidadDTO especialidad;
 	private LocalDateTime fechaCreacion;
 	private LocalDateTime fechaActualizacion;
 
@@ -102,12 +102,12 @@ public class UsuarioDTO {
 		this.estadoUsuario = estadoUsuario;
 	}
 
-	public Integer getIdEspecialidad() {
-		return idEspecialidad;
+	public EspecialidadDTO getEspecialidad() {
+		return especialidad;
 	}
 
-	public void setIdEspecialidad(Integer idEspecialidad) {
-		this.idEspecialidad = idEspecialidad;
+	public void setEspecialidad(EspecialidadDTO especialidad) {
+		this.especialidad = especialidad;
 	}
 
 	public LocalDateTime getFechaCreacion() {

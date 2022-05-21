@@ -11,10 +11,10 @@ public class CitaDTO {
 	private LocalDateTime fechaCita;
 	private int idUsuario;
 	private int idMedico;
-	private int idConsulta;
+	private ConsultaDTO consulta;
 	private EstadoAtencion estadoAtencion;
 	private EstadoPago estadoPago;
-	private int idDescuentoMotivo;
+	private DescuentoMotivoDTO descuentoMotivo;
 	private LocalDateTime fechaCreacion;
 	private LocalDateTime fechaActualizacion;
 
@@ -50,12 +50,12 @@ public class CitaDTO {
 		this.idMedico = idMedico;
 	}
 
-	public int getIdConsulta() {
-		return idConsulta;
+	public ConsultaDTO getConsulta() {
+		return consulta;
 	}
 
-	public void setIdConsulta(int idConsulta) {
-		this.idConsulta = idConsulta;
+	public void setConsulta(ConsultaDTO consulta) {
+		this.consulta = consulta;
 	}
 
 	public EstadoAtencion getEstadoAtencion() {
@@ -74,12 +74,12 @@ public class CitaDTO {
 		this.estadoPago = estadoPago;
 	}
 
-	public int getIdDescuentoMotivo() {
-		return idDescuentoMotivo;
+	public DescuentoMotivoDTO getDescuentoMotivo() {
+		return descuentoMotivo;
 	}
 
-	public void setIdDescuentoMotivo(int idDescuentoMotivo) {
-		this.idDescuentoMotivo = idDescuentoMotivo;
+	public void setDescuentoMotivo(DescuentoMotivoDTO descuentoMotivo) {
+		this.descuentoMotivo = descuentoMotivo;
 	}
 
 	public LocalDateTime getFechaCreacion() {

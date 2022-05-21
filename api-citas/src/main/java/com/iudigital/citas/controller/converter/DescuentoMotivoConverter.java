@@ -17,8 +17,8 @@ public class DescuentoMotivoConverter {
 		descuentoMotivo.setIdDescuentoMotivo(descuentoMotivoDTO.getIdDescuentoMotivo());
 		
 		Motivo motivo = new Motivo();
-		motivo.setIdMotivo(descuentoMotivoDTO.getMotivoDTO().getIdMotivo());
-		motivo.setNombre(descuentoMotivoDTO.getMotivoDTO().getNombre());
+		motivo.setIdMotivo(descuentoMotivoDTO.getMotivo().getIdMotivo());
+		motivo.setNombre(descuentoMotivoDTO.getMotivo().getNombre());
 		descuentoMotivo.setMotivo(motivo);
 		
 		descuentoMotivo.setPorcentaje(descuentoMotivoDTO.getPorcentaje());
@@ -39,7 +39,7 @@ public class DescuentoMotivoConverter {
 		MotivoDTO motivo = new MotivoDTO();
 		motivo.setIdMotivo(descuentoMotivo.getMotivo().getIdMotivo());
 		motivo.setNombre(descuentoMotivo.getMotivo().getNombre());
-		descuentoMotivoDTO.setMotivoDTO(motivo);
+		descuentoMotivoDTO.setMotivo(motivo);
 		
 		descuentoMotivoDTO.setPorcentaje(descuentoMotivo.getPorcentaje());
 		descuentoMotivoDTO.setEstadoDescuento(descuentoMotivo.getEstadoDescuento());

@@ -6,9 +6,12 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.iudigital.citas.enums.EstadoAtencion;
@@ -21,7 +24,7 @@ public class Cita {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "cita_id")
-	private int idCita;
+	private Integer idCita;
 
 	@Column(name = "fecha_cita")
 	private LocalDateTime fechaCita;
@@ -32,8 +35,9 @@ public class Cita {
 	@Column(name = "medico_id")
 	private int idMedico;
 
-	@Column(name = "consulta_id")
-	private int idConsulta;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "consulta_id")
+	private Consulta consulta;
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "estado_atencion")
@@ -43,8 +47,9 @@ public class Cita {
 	@Column(name = "estado_pago")
 	private EstadoPago estadoPago;
 
-	@Column(name = "descuento_motivo_id")
-	private int idDescuentoMotivo;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "descuento_motivo_id")
+	private DescuentoMotivo descuentoMotivo;
 
 	@Column(name = "fecha_creacion")
 	private LocalDateTime fechaCreacion;
@@ -52,11 +57,11 @@ public class Cita {
 	@Column(name = "fecha_actualizacion")
 	private LocalDateTime fechaActualizacion;
 
-	public int getIdCita() {
+	public Integer getIdCita() {
 		return idCita;
 	}
 
-	public void setIdCita(int idCita) {
+	public void setIdCita(Integer idCita) {
 		this.idCita = idCita;
 	}
 
@@ -84,12 +89,12 @@ public class Cita {
 		this.idMedico = idMedico;
 	}
 
-	public int getIdConsulta() {
-		return idConsulta;
+	public Consulta getConsulta() {
+		return consulta;
 	}
 
-	public void setIdConsulta(int idConsulta) {
-		this.idConsulta = idConsulta;
+	public void setConsulta(Consulta consulta) {
+		this.consulta = consulta;
 	}
 
 	public EstadoAtencion getEstadoAtencion() {
@@ -108,12 +113,12 @@ public class Cita {
 		this.estadoPago = estadoPago;
 	}
 
-	public int getIdDescuentoMotivo() {
-		return idDescuentoMotivo;
+	public DescuentoMotivo getDescuentoMotivo() {
+		return descuentoMotivo;
 	}
 
-	public void setIdDescuentoMotivo(int idDescuentoMotivo) {
-		this.idDescuentoMotivo = idDescuentoMotivo;
+	public void setDescuentoMotivo(DescuentoMotivo descuentoMotivo) {
+		this.descuentoMotivo = descuentoMotivo;
 	}
 
 	public LocalDateTime getFechaCreacion() {
@@ -130,14 +135,6 @@ public class Cita {
 
 	public void setFechaActualizacion(LocalDateTime fechaActualizacion) {
 		this.fechaActualizacion = fechaActualizacion;
-	}
-
-	@Override
-	public String toString() {
-		return "Cita [idCita=" + idCita + ", fechaCita=" + fechaCita + ", idUsuario=" + idUsuario + ", idMedico="
-				+ idMedico + ", idConsulta=" + idConsulta + ", estadoAtencion=" + estadoAtencion + ", estadoPago="
-				+ estadoPago + ", idDescuentoMotivo=" + idDescuentoMotivo + ", fechaCreacion=" + fechaCreacion
-				+ ", fechaActualizacion=" + fechaActualizacion + "]";
 	}
 
 }

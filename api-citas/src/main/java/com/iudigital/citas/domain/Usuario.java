@@ -7,9 +7,12 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.iudigital.citas.enums.EstadoUsuario;
@@ -21,7 +24,7 @@ public class Usuario {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "usuario_id")
+	@Column( name = "usuario_id")
 	private int idUsuario;
 
 	@Column(name = "nombres")
@@ -53,8 +56,9 @@ public class Usuario {
 	@Column(name = "estado_usuario")
 	private EstadoUsuario estadoUsuario;
 
-	@Column(name = "especialidad_id")
-	private Integer idEspecialidad;
+	@ManyToOne(optional = true, fetch = FetchType.EAGER)
+	@JoinColumn(columnDefinition="integer", nullable = true, name = "especialidad_id" )
+	private Especialidad especialidad;
 
 	@Column(name = "fecha_creacion")
 	private LocalDateTime fechaCreacion;
@@ -142,12 +146,12 @@ public class Usuario {
 		this.estadoUsuario = estadoUsuario;
 	}
 
-	public Integer getIdEspecialidad() {
-		return idEspecialidad;
+	public Especialidad getEspecialidad() {
+		return especialidad;
 	}
 
-	public void setIdEspecialidad(Integer idEspecialidad) {
-		this.idEspecialidad = idEspecialidad;
+	public void setEspecialidad(Especialidad especialidad) {
+		this.especialidad = especialidad;
 	}
 
 	public LocalDateTime getFechaCreacion() {
@@ -164,21 +168,6 @@ public class Usuario {
 
 	public void setFechaActualizacion(LocalDateTime fechaActualizacion) {
 		this.fechaActualizacion = fechaActualizacion;
-	}
-
-	@Override
-	public String toString() {
-		return "Usuario [idUsuario=" + idUsuario + ", nombres=" + nombres + ", apellidos=" + apellidos + ", tipoDoc="
-				+ tipoDoc + ", numeroDoc=" + numeroDoc + ", fechaNacimiento=" + fechaNacimiento + ", telefono="
-				+ telefono + ", correo=" + correo + ", pass=" + pass + ", estadoUsuario=" + estadoUsuario
-				+ ", idEspecialidad=" + idEspecialidad + ", fechaCreacion=" + fechaCreacion + ", fechaActualizacion="
-				+ fechaActualizacion + ", getIdUsuario()=" + getIdUsuario() + ", getNombres()=" + getNombres()
-				+ ", getApellidos()=" + getApellidos() + ", getTipoDoc()=" + getTipoDoc() + ", getNumeroDoc()="
-				+ getNumeroDoc() + ", getFechaNacimiento()=" + getFechaNacimiento() + ", getTelefono()=" + getTelefono()
-				+ ", getCorreo()=" + getCorreo() + ", getPass()=" + getPass() + ", getEstadoUsuario()="
-				+ getEstadoUsuario() + ", getIdEspecialidad()=" + getIdEspecialidad() + ", getFechaCreacion()="
-				+ getFechaCreacion() + ", getFechaActualizacion()=" + getFechaActualizacion() + ", getClass()="
-				+ getClass() + ", hashCode()=" + hashCode() + ", toString()=" + super.toString() + "]";
 	}
 
 }

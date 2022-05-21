@@ -44,7 +44,7 @@ public class UsuarioService {
 			usuarioUpdate.setCorreo(usuario.getCorreo());
 			usuarioUpdate.setPass(usuario.getPass());
 			usuarioUpdate.setEstadoUsuario(usuario.getEstadoUsuario());
-			usuarioUpdate.setIdEspecialidad(usuario.getIdEspecialidad());
+			usuarioUpdate.setEspecialidad(usuario.getEspecialidad());
 
 			usuarioUpdate.setFechaActualizacion(LocalDateTime.now());
 
@@ -53,6 +53,18 @@ public class UsuarioService {
 			throw new Exception("No existe usuario");
 		}
 
+	}
+	
+	public Usuario getUsuarioById(int idUsuario) throws Exception {
+		
+		Usuario usuario = usuarioRepository.findById(idUsuario).orElse(null);
+		if (usuario != null) {
+		return usuario;
+		}else {
+			throw new Exception("No existe usuario");
+		}
+
+		
 	}
 
 }

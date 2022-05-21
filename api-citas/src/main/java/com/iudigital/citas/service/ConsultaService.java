@@ -30,8 +30,8 @@ public class ConsultaService {
 
 		if (consultaUpdate != null) {
 
-			consultaUpdate.setIdTipoCita(consulta.getIdTipoCita());
-			consultaUpdate.setIdEspecialidad(consulta.getIdEspecialidad());
+			consultaUpdate.setTipoCita(consulta.getTipoCita());
+			consultaUpdate.setEspecialidad(consulta.getEspecialidad());
 			consultaUpdate.setCosto(consulta.getCosto());
 
 			consultaRepository.save(consultaUpdate);

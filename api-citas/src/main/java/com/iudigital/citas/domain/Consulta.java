@@ -2,9 +2,12 @@ package com.iudigital.citas.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -15,13 +18,15 @@ public class Consulta {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "consulta_id")
 	private int idConsulta;
-	
-	@Column(name = "tipo_cita_id")
-	private int idTipoCita;
-	
-	@Column(name = "especialidad_id")
-	private int idEspecialidad;
-	
+
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "tipo_cita_id")
+	private TipoCita tipoCita;
+
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "especialidad_id")
+	private Especialidad especialidad;
+
 	@Column(name = "costo")
 	private double costo;
 
@@ -33,20 +38,20 @@ public class Consulta {
 		this.idConsulta = idConsulta;
 	}
 
-	public int getIdTipoCita() {
-		return idTipoCita;
+	public TipoCita getTipoCita() {
+		return tipoCita;
 	}
 
-	public void setIdTipoCita(int idTipoCita) {
-		this.idTipoCita = idTipoCita;
+	public void setTipoCita(TipoCita tipoCita) {
+		this.tipoCita = tipoCita;
 	}
 
-	public int getIdEspecialidad() {
-		return idEspecialidad;
+	public Especialidad getEspecialidad() {
+		return especialidad;
 	}
 
-	public void setIdEspecialidad(int idEspecialidad) {
-		this.idEspecialidad = idEspecialidad;
+	public void setEspecialidad(Especialidad especialidad) {
+		this.especialidad = especialidad;
 	}
 
 	public double getCosto() {
@@ -56,9 +61,5 @@ public class Consulta {
 	public void setCosto(double costo) {
 		this.costo = costo;
 	}
-	
-	
-	
-	
-	
+
 }

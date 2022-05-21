@@ -2,7 +2,9 @@ package com.iudigital.citas.controller.converter;
 
 import org.springframework.stereotype.Component;
 
+import com.iudigital.citas.controller.dto.EspecialidadDTO;
 import com.iudigital.citas.controller.dto.TratamientoDTO;
+import com.iudigital.citas.domain.Especialidad;
 import com.iudigital.citas.domain.Tratamiento;
 
 @Component
@@ -14,7 +16,12 @@ public class TratamientoConverter {
 
 		tratamiento.setIdTratamiento(tratamientoDTO.getIdTratamiento());
 		tratamiento.setNombre(tratamientoDTO.getNombre());
-		tratamiento.setIdEspecialidad(tratamientoDTO.getIdEspecialidad());
+
+		Especialidad especialidad = new Especialidad();
+		especialidad.setIdEspecialidad(tratamientoDTO.getEspecialidad().getIdEspecialidad());
+		especialidad.setNombre(tratamientoDTO.getEspecialidad().getNombre());
+		tratamiento.setEspecialidad(especialidad);
+
 		tratamiento.setDiagnostico(tratamientoDTO.getDiagnostico());
 		tratamiento.setIdCita(tratamientoDTO.getIdCita());
 		tratamiento.setFechaCreacion(tratamiento.getFechaCreacion());
@@ -23,14 +30,19 @@ public class TratamientoConverter {
 		return tratamiento;
 
 	}
-	
+
 	public TratamientoDTO convertTratamientoToTratamientoDTO(Tratamiento tratamiento) {
 
 		TratamientoDTO tratamientoDTO = new TratamientoDTO();
 
 		tratamientoDTO.setIdTratamiento(tratamiento.getIdTratamiento());
 		tratamientoDTO.setNombre(tratamiento.getNombre());
-		tratamientoDTO.setIdEspecialidad(tratamiento.getIdEspecialidad());
+
+		EspecialidadDTO especialidad = new EspecialidadDTO();
+		especialidad.setIdEspecialidad(tratamiento.getEspecialidad().getIdEspecialidad());
+		especialidad.setNombre(tratamiento.getEspecialidad().getNombre());
+		tratamientoDTO.setEspecialidad(especialidad);
+
 		tratamientoDTO.setDiagnostico(tratamiento.getDiagnostico());
 		tratamientoDTO.setIdCita(tratamiento.getIdCita());
 		tratamientoDTO.setFechaCreacion(tratamiento.getFechaCreacion());
@@ -39,6 +51,5 @@ public class TratamientoConverter {
 		return tratamientoDTO;
 
 	}
-	
-	
+
 }

@@ -13,17 +13,17 @@ public class Especialidad {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "especialidad_id")
-	private int idEspecialidad;
+	@Column(nullable = true, name = "especialidad_id")
+	private Integer idEspecialidad;
 
-	@Column(name = "nombre")
+	@Column(nullable = true, name = "nombre")
 	private String nombre;
 
-	public int getIdEspecialidad() {
+	public Integer getIdEspecialidad() {
 		return idEspecialidad;
 	}
 
-	public void setIdEspecialidad(int idEspecialidad) {
+	public void setIdEspecialidad(Integer idEspecialidad) {
 		this.idEspecialidad = idEspecialidad;
 	}
 
@@ -33,6 +33,11 @@ public class Especialidad {
 
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
+	}
+
+	@Override
+	public String toString() {
+		return "Especialidad [idEspecialidad=" + idEspecialidad + ", nombre=" + nombre + "]";
 	}
 
 }

@@ -6,7 +6,7 @@ public class TratamientoDTO {
 
 	private int idTratamiento;
 	private String nombre;
-	private int idEspecialidad;
+	private EspecialidadDTO especialidad;
 	private String diagnostico;
 	private int idCita;
 	private LocalDateTime fechaCreacion;
@@ -28,12 +28,12 @@ public class TratamientoDTO {
 		this.nombre = nombre;
 	}
 
-	public int getIdEspecialidad() {
-		return idEspecialidad;
+	public EspecialidadDTO getEspecialidad() {
+		return especialidad;
 	}
 
-	public void setIdEspecialidad(int idEspecialidad) {
-		this.idEspecialidad = idEspecialidad;
+	public void setEspecialidad(EspecialidadDTO especialidad) {
+		this.especialidad = especialidad;
 	}
 
 	public String getDiagnostico() {

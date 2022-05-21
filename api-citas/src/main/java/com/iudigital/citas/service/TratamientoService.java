@@ -33,7 +33,7 @@ public class TratamientoService {
 		if (tratamientoUpdate != null) {
 
 			tratamientoUpdate.setNombre(tratamiento.getNombre());
-			tratamientoUpdate.setIdEspecialidad(tratamiento.getIdEspecialidad());
+			tratamientoUpdate.setEspecialidad(tratamiento.getEspecialidad());
 			tratamientoUpdate.setDiagnostico(tratamiento.getDiagnostico());
 			tratamientoUpdate.setIdCita(tratamiento.getIdCita());
 			tratamientoUpdate.setFechaActualizacion(LocalDateTime.now());

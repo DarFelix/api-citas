@@ -1,15 +1,22 @@
 package com.iudigital.citas.service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.iudigital.citas.data.CitaRepository;
 import com.iudigital.citas.data.UsuarioRepository;
 import com.iudigital.citas.domain.Cita;
 import com.iudigital.citas.domain.Usuario;
+import com.iudigital.citas.domain.filter.CitaFilter;
+import com.iudigital.citas.domain.filter.PaginationInfo;
 import com.iudigital.citas.enums.EstadoAtencion;
 import com.iudigital.citas.enums.EstadoPago;
 
@@ -105,33 +112,48 @@ public class CitaService {
 			citaUpdate.setEstadoAtencion(EstadoAtencion.CANCELADA);
 
 			citaRepository.save(citaUpdate);
-			
+
 		} else if (citaUpdate == null) {
 			throw new Exception("La cita no existe.");
 		} else if (citaUpdate.getEstadoPago().equals(EstadoPago.PAGADA)) {
 			throw new Exception("No se puede cancelar una cita ya pagada");
 		}
 
-
-
 	}
-	
+
 	public void pagarCita(int idCita) throws Exception {
-		
+
 		Cita citaUpdate = citaRepository.findById(idCita).orElse(null);
-		
+
 		if (!(citaUpdate == null) && !(citaUpdate.getEstadoPago().name().equals("PAGADA"))) {
 
 			citaUpdate.setEstadoPago(EstadoPago.PAGADA);
 
 			citaRepository.save(citaUpdate);
-			
+
 		} else if (citaUpdate == null) {
 			throw new Exception("La cita no existe.");
 		} else if (citaUpdate.getEstadoPago().name().equals("PAGADA")) {
 			throw new Exception("La cita ya fue pagada.");
 		}
-		
+
+	}
+
+	public List<Cita> getAllCitas(Integer pageNo, Integer pageSize, String sortBy) {
+		Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
+		Page<Cita> pagedResult = citaRepository.findAll(paging);
+
+		if (pagedResult.hasContent()) {
+			return pagedResult.getContent();
+		} else {
+			return new ArrayList<Cita>();
+		}
+	}
+
+	public Page<Cita> getCitas(CitaFilter filter, PaginationInfo paginationInfo) {
+
+		return citaRepository.getCitas(filter, paginationInfo);
+
 	}
 
 }

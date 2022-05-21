@@ -2,14 +2,14 @@ package com.iudigital.citas.controller.dto;
 
 public class EspecialidadDTO {
 
-	private int idEspecialidad;
+	private Integer idEspecialidad;
 	private String nombre;
 
 	public int getIdEspecialidad() {
 		return idEspecialidad;
 	}
 
-	public void setIdEspecialidad(int idEspecialidad) {
+	public void setIdEspecialidad(Integer idEspecialidad) {
 		this.idEspecialidad = idEspecialidad;
 	}
 

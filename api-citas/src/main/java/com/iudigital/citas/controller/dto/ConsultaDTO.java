@@ -3,8 +3,8 @@ package com.iudigital.citas.controller.dto;
 public class ConsultaDTO {
 
 	private int idConsulta;
-	private int idTipoCita;
-	private int idEspecialidad;
+	private TipoCitaDTO tipoCita;
+	private EspecialidadDTO especialidad;
 	private double costo;
 
 	public int getIdConsulta() {
@@ -15,20 +15,20 @@ public class ConsultaDTO {
 		this.idConsulta = idConsulta;
 	}
 
-	public int getIdTipoCita() {
-		return idTipoCita;
+	public TipoCitaDTO getTipoCita() {
+		return tipoCita;
 	}
 
-	public void setIdTipoCita(int idTipoCita) {
-		this.idTipoCita = idTipoCita;
+	public void setTipoCita(TipoCitaDTO tipoCita) {
+		this.tipoCita = tipoCita;
 	}
 
-	public int getIdEspecialidad() {
-		return idEspecialidad;
+	public EspecialidadDTO getEspecialidad() {
+		return especialidad;
 	}
 
-	public void setIdEspecialidad(int idEspecialidad) {
-		this.idEspecialidad = idEspecialidad;
+	public void setEspecialidad(EspecialidadDTO especialidad) {
+		this.especialidad = especialidad;
 	}
 
 	public double getCosto() {

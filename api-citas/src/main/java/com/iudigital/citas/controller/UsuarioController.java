@@ -48,13 +48,23 @@ public class UsuarioController {
 	public void editUsuario(@PathVariable String numeroDoc, @RequestBody Usuario usuario) throws Exception {
 		usuarioService.editUsuario(numeroDoc, usuario);
 	}
-	
+
 	@PostMapping("/crearUsuario")
 	@ResponseStatus(HttpStatus.CREATED)
 	public void createUsuario(@RequestBody UsuarioDTO usuarioDTO) {
-		usuarioDTO.setIdEspecialidad(null);
+		usuarioDTO.setEspecialidad(null);
 		usuarioService.createUsuario(usuarioConverter.convertUsuarioDTOToUsuario(usuarioDTO));
 	}
-	
-	
+
+	@GetMapping("/{idUsuario}")
+	public UsuarioDTO getUsuario(@PathVariable int idUsuario) throws Exception {
+		
+		try {
+		return usuarioConverter.convertUsuarioToUsuarioDTO(usuarioService.getUsuarioById(idUsuario));
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+	}
+
 }

@@ -26,7 +26,7 @@ public class EspecialidadService {
 	
 	public void editEspecialidad(int idEspecialidad, Especialidad especialidad) throws Exception {
 
-		Especialidad especialidadUpdate = especialidadRepository.findById(idEspecialidad);
+		Especialidad especialidadUpdate = especialidadRepository.findById(idEspecialidad).orElse(null);
 
 		if (especialidadUpdate != null) {
 

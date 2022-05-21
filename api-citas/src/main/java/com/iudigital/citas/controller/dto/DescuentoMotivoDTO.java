@@ -21,11 +21,11 @@ public class DescuentoMotivoDTO {
 		this.idDescuentoMotivo = idDescuentoMotivo;
 	}
 
-	public MotivoDTO getMotivoDTO() {
+	public MotivoDTO getMotivo() {
 		return motivo;
 	}
 
-	public void setMotivoDTO(MotivoDTO motivo) {
+	public void setMotivo(MotivoDTO motivo) {
 		this.motivo = motivo;
 	}
 

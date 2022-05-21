@@ -4,9 +4,12 @@ import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -21,8 +24,9 @@ public class Tratamiento {
 	@Column(name = "nombre")
 	private String nombre;
 
-	@Column(name = "especialidad_id")
-	private int idEspecialidad;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "especialidad_id")
+	private Especialidad especialidad;
 
 	@Column(name = "diagnostico")
 	private String diagnostico;
@@ -52,12 +56,12 @@ public class Tratamiento {
 		this.nombre = nombre;
 	}
 
-	public int getIdEspecialidad() {
-		return idEspecialidad;
+	public Especialidad getEspecialidad() {
+		return especialidad;
 	}
 
-	public void setIdEspecialidad(int idEspecialidad) {
-		this.idEspecialidad = idEspecialidad;
+	public void setEspecialidad(Especialidad especialidad) {
+		this.especialidad = especialidad;
 	}
 
 	public String getDiagnostico() {

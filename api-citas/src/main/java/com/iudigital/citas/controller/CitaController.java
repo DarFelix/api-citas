@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -21,6 +22,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.iudigital.citas.controller.converter.CitaConverter;
 import com.iudigital.citas.controller.dto.CitaDTO;
 import com.iudigital.citas.domain.Cita;
+import com.iudigital.citas.domain.filter.CitaFilter;
+import com.iudigital.citas.domain.filter.PaginationInfo;
 import com.iudigital.citas.enums.EstadoAtencion;
 import com.iudigital.citas.enums.EstadoPago;
 import com.iudigital.citas.service.CitaService;
@@ -35,7 +38,7 @@ public class CitaController {
 
 	@Autowired
 	CitaConverter citaConverter;
-
+	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public void createCita(@RequestBody CitaDTO citaDTO) throws Exception {
@@ -85,6 +88,23 @@ public class CitaController {
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void pagarCita(@PathVariable int idCita) throws Exception {
 		citaService.pagarCita(idCita);
+	}
+
+	@GetMapping("/paging")
+	public List<CitaDTO> getCitasPaging(@RequestParam Integer pageNo, @RequestParam Integer pageSize,
+			@RequestParam String sortBy) {
+		return citaService.getAllCitas(pageNo, pageSize, sortBy).stream().map(cita -> citaConverter.convertCitaToCitaDTO(cita))
+				.collect(Collectors.toList());
+		
+	}
+	
+	@GetMapping("/citasExec")
+	public List<CitaDTO> getCitas(@RequestParam CitaFilter filter, @RequestParam PaginationInfo paginationInfo) {
+
+		Page<Cita> page = citaService.getCitas(filter, paginationInfo);
+
+		return page.getContent().stream().map(cita -> citaConverter.convertCitaToCitaDTO(cita)).collect(Collectors.toList());
+
 	}
 
 }
