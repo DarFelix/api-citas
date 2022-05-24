@@ -19,21 +19,23 @@ import com.iudigital.citas.enums.EstadoPago;
 
 @Entity
 @Table(name = "citas")
-public class Cita {
+public class Cita  {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "cita_id")
-	private Integer idCita;
+	private Long idCita;
 
 	@Column(name = "fecha_cita")
 	private LocalDateTime fechaCita;
 
-	@Column(name = "usuario_id")
-	private int idUsuario;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "usuario_id")
+	private Usuario usuario;
 
-	@Column(name = "medico_id")
-	private int idMedico;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "usuario_id")
+	private Usuario medico;
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "consulta_id")
@@ -57,11 +59,11 @@ public class Cita {
 	@Column(name = "fecha_actualizacion")
 	private LocalDateTime fechaActualizacion;
 
-	public Integer getIdCita() {
+	public Long getIdCita() {
 		return idCita;
 	}
 
-	public void setIdCita(Integer idCita) {
+	public void setIdCita(Long idCita) {
 		this.idCita = idCita;
 	}
 
@@ -73,20 +75,20 @@ public class Cita {
 		this.fechaCita = fechaCita;
 	}
 
-	public int getIdUsuario() {
-		return idUsuario;
+	public Usuario getUsuario() {
+		return usuario;
 	}
 
-	public void setIdUsuario(int idUsuario) {
-		this.idUsuario = idUsuario;
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
 	}
 
-	public int getIdMedico() {
-		return idMedico;
+	public Usuario getMedico() {
+		return medico;
 	}
 
-	public void setIdMedico(int idMedico) {
-		this.idMedico = idMedico;
+	public void setMedico(Usuario medico) {
+		this.medico = medico;
 	}
 
 	public Consulta getConsulta() {

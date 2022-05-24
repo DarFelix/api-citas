@@ -8,13 +8,12 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
-import com.iudigital.citas.data.custom.CitaRepositoryCustom;
 import com.iudigital.citas.domain.Cita;
 import com.iudigital.citas.enums.EstadoAtencion;
 import com.iudigital.citas.enums.EstadoPago;
 
 @Repository
-public interface CitaRepository extends PagingAndSortingRepository<Cita, Integer>, JpaSpecificationExecutor<Cita>, CitaRepositoryCustom{
+public interface CitaRepository extends PagingAndSortingRepository<Cita, Long>, JpaSpecificationExecutor<Cita>{
 
 	@Query(value = "select * from citas c where c.fecha_cita between date_sub( :fechaHoraCita , interval 19 minute) and date_add( :fechaHoraCita, interval 19 minute) and c.medico_id = :idMedico ", nativeQuery = true)
 	public List<Cita> findCitasExistentes(LocalDateTime fechaHoraCita, int idMedico);

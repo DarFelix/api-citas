@@ -9,14 +9,16 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import com.iudigital.citas.controller.spec.CitaSpecification;
+import com.iudigital.citas.controller.spec.SearchCriteria;
+import com.iudigital.citas.controller.spec.SearchOperation;
 import com.iudigital.citas.data.CitaRepository;
 import com.iudigital.citas.data.UsuarioRepository;
 import com.iudigital.citas.domain.Cita;
 import com.iudigital.citas.domain.Usuario;
-import com.iudigital.citas.domain.filter.CitaFilter;
-import com.iudigital.citas.domain.filter.PaginationInfo;
 import com.iudigital.citas.enums.EstadoAtencion;
 import com.iudigital.citas.enums.EstadoPago;
 
@@ -55,7 +57,7 @@ public class CitaService {
 		return citas;
 	}
 
-	public void reprogramarCita(int idCita, Cita citaDeseada) throws Exception {
+	public void reprogramarCita(Long idCita, Cita citaDeseada) throws Exception {
 
 		Cita citaInconveniente = citaRepository.findById(idCita).orElse(null);
 		List<Cita> citasExistentes = citaRepository.findCitasExistentes(citaDeseada.getFechaCita(),
@@ -103,7 +105,7 @@ public class CitaService {
 
 	}
 
-	public void cancelarCita(int idCita) throws Exception {
+	public void cancelarCita(Long idCita) throws Exception {
 
 		Cita citaUpdate = citaRepository.findById(idCita).orElse(null);
 
@@ -121,7 +123,7 @@ public class CitaService {
 
 	}
 
-	public void pagarCita(int idCita) throws Exception {
+	public void pagarCita(Long idCita) throws Exception {
 
 		Cita citaUpdate = citaRepository.findById(idCita).orElse(null);
 
@@ -150,10 +152,19 @@ public class CitaService {
 		}
 	}
 
-	public Page<Cita> getCitas(CitaFilter filter, PaginationInfo paginationInfo) {
-
-		return citaRepository.getCitas(filter, paginationInfo);
-
+	public List<Cita> getCitasSpec(EstadoPago estadoPago, EstadoAtencion estadoAtencion, String nombreEspec) throws Exception{
+		CitaSpecification citaEstPago = new CitaSpecification();
+		citaEstPago.add(new SearchCriteria("estadoPago", estadoPago , SearchOperation.EQUAL));
+		
+		CitaSpecification citaEstAten = new CitaSpecification();
+		citaEstAten.add(new SearchCriteria("estadoAtencion", estadoAtencion , SearchOperation.EQUAL));
+		
+		CitaSpecification citaIdMed = new CitaSpecification();
+		citaEstAten.add(new SearchCriteria("consulta.especialidad.nombre", 	nombreEspec , SearchOperation.EQUAL));
+		
+		List<Cita> citaSpec = citaRepository.findAll(Specification.where(citaEstPago).or(citaEstAten).or(citaIdMed));
+		return citaSpec;
+		
 	}
-
+	
 }

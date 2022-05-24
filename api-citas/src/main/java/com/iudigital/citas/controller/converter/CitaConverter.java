@@ -14,6 +14,7 @@ import com.iudigital.citas.domain.DescuentoMotivo;
 import com.iudigital.citas.domain.Especialidad;
 import com.iudigital.citas.domain.Motivo;
 import com.iudigital.citas.domain.TipoCita;
+import com.iudigital.citas.domain.Usuario;
 
 @Component
 public class CitaConverter {
@@ -24,7 +25,13 @@ public class CitaConverter {
 
 		cita.setIdCita(citaDTO.getIdCita());
 		cita.setFechaCita(citaDTO.getFechaCita());
-		cita.setIdUsuario(citaDTO.getIdUsuario());
+		
+		Usuario usuario = new Usuario();
+		
+		cita.setUsuario(citaDTO.getIdUsuario());
+		
+		
+		
 		cita.setIdMedico(citaDTO.getIdMedico());
 		
 		Consulta consulta = new Consulta();
