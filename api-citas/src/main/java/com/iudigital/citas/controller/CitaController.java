@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.iudigital.citas.controller.converter.CitaConverter;
 import com.iudigital.citas.controller.dto.CitaDTO;
 import com.iudigital.citas.domain.Cita;
+import com.iudigital.citas.domain.filter.CitaFilter;
+import com.iudigital.citas.domain.filter.PaginationInfo;
 import com.iudigital.citas.enums.EstadoAtencion;
 import com.iudigital.citas.enums.EstadoPago;
 import com.iudigital.citas.service.CitaService;
@@ -43,9 +45,14 @@ public class CitaController {
 	}
 
 	@GetMapping
-	public List<CitaDTO> getCitas() {
+	public List<CitaDTO> getCitas() throws Exception{
+		try {
 		return citaService.getCitas().stream().map(cita -> citaConverter.convertCitaToCitaDTO(cita))
 				.collect(Collectors.toList());
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
 	}
 
 	@PutMapping("/{idCita}")
@@ -95,17 +102,15 @@ public class CitaController {
 
 	}
 
-	@GetMapping("/busquedaSpec")
-	public List<CitaDTO> getCitasPago(@RequestParam EstadoPago estadoPago, @RequestParam EstadoAtencion estadoAtencion,
-			@RequestParam String nombreEspec) throws Exception {
-
+	@PostMapping("/getSpecCitas")
+    public List<CitaDTO> getCitasList(CitaFilter request, PaginationInfo paginationInfo) throws Exception {
 		try {
-			return citaService.getCitasSpec(estadoPago, estadoAtencion, nombreEspec).stream()
-					.map(cita -> citaConverter.convertCitaToCitaDTO(cita)).collect(Collectors.toList());
+		return citaService.getSpecCitaList(request, paginationInfo).stream()
+				.map(cita -> citaConverter.convertCitaToCitaDTO(cita)).collect(Collectors.toList());
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;
 		}
-	}
+    }
 
 }

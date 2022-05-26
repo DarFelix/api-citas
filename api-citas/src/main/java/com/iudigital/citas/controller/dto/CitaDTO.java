@@ -2,7 +2,6 @@ package com.iudigital.citas.controller.dto;
 
 import java.time.LocalDateTime;
 
-import com.iudigital.citas.domain.Usuario;
 import com.iudigital.citas.enums.EstadoAtencion;
 import com.iudigital.citas.enums.EstadoPago;
 
@@ -10,8 +9,8 @@ public class CitaDTO {
 
 	private Long idCita;
 	private LocalDateTime fechaCita;
-	private Usuario usuario;
-	private Usuario medico;
+	private UsuarioDTO usuario;
+	private UsuarioDTO medico;
 	private ConsultaDTO consulta;
 	private EstadoAtencion estadoAtencion;
 	private EstadoPago estadoPago;
@@ -35,19 +34,19 @@ public class CitaDTO {
 		this.fechaCita = fechaCita;
 	}
 
-	public Usuario getUsuario() {
+	public UsuarioDTO getUsuario() {
 		return usuario;
 	}
 
-	public void setUsuario(Usuario usuario) {
+	public void setUsuario(UsuarioDTO usuario) {
 		this.usuario = usuario;
 	}
 
-	public Usuario getMedico() {
+	public UsuarioDTO getMedico() {
 		return medico;
 	}
 
-	public void setMedico(Usuario medico) {
+	public void setMedico(UsuarioDTO medico) {
 		this.medico = medico;
 	}
 

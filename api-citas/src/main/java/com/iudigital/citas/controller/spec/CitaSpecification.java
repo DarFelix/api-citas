@@ -1,70 +1,93 @@
-
 package com.iudigital.citas.controller.spec;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
 import com.iudigital.citas.domain.Cita;
+import com.iudigital.citas.domain.Consulta;
+import com.iudigital.citas.domain.filter.CitaFilter;
 
-@SuppressWarnings("serial")
 @Component
-public class CitaSpecification implements Specification<Cita> {
+public class CitaSpecification {
 
-	private List<SearchCriteria> list;
+	public Specification<Cita> getSpeCitas(CitaFilter request, String sortBy) {
+		return (root, query, criteriaBuilder) -> {
+			List<Predicate> predicates = new ArrayList<>();
 
-	public CitaSpecification() {
-		this.list = new ArrayList<>();
-	}
-
-	public void add(SearchCriteria criteria) {
-		list.add(criteria);
-	}
-
-	@Override
-	public Predicate toPredicate(Root<Cita> root, CriteriaQuery<?> query, CriteriaBuilder builder) {
-
-		// create a new predicate list
-		List<Predicate> predicates = new ArrayList<>();
-
-		// add add criteria to predicates
-		for (SearchCriteria criteria : list) {
-			if (criteria.getOperation().equals(SearchOperation.GREATER_THAN)) {
-				predicates.add(builder.greaterThan(root.get(criteria.getKey()), criteria.getValue().toString()));
-			} else if (criteria.getOperation().equals(SearchOperation.LESS_THAN)) {
-				predicates.add(builder.lessThan(root.get(criteria.getKey()), criteria.getValue().toString()));
-			} else if (criteria.getOperation().equals(SearchOperation.GREATER_THAN_EQUAL)) {
-				predicates
-						.add(builder.greaterThanOrEqualTo(root.get(criteria.getKey()), criteria.getValue().toString()));
-			} else if (criteria.getOperation().equals(SearchOperation.LESS_THAN_EQUAL)) {
-				predicates.add(builder.lessThanOrEqualTo(root.get(criteria.getKey()), criteria.getValue().toString()));
-			} else if (criteria.getOperation().equals(SearchOperation.NOT_EQUAL)) {
-				predicates.add(builder.notEqual(root.get(criteria.getKey()), criteria.getValue()));
-			} else if (criteria.getOperation().equals(SearchOperation.EQUAL)) {
-				predicates.add(builder.equal(root.get(criteria.getKey()), criteria.getValue()));
-			} else if (criteria.getOperation().equals(SearchOperation.MATCH)) {
-				predicates.add(builder.like(builder.lower(root.get(criteria.getKey())),
-						"%" + criteria.getValue().toString().toLowerCase() + "%"));
-			} else if (criteria.getOperation().equals(SearchOperation.MATCH_END)) {
-				predicates.add(builder.like(builder.lower(root.get(criteria.getKey())),
-						criteria.getValue().toString().toLowerCase() + "%"));
-			} else if (criteria.getOperation().equals(SearchOperation.MATCH_START)) {
-				predicates.add(builder.like(builder.lower(root.get(criteria.getKey())),
-						"%" + criteria.getValue().toString().toLowerCase()));
-			} else if (criteria.getOperation().equals(SearchOperation.IN)) {
-				predicates.add(builder.in(root.get(criteria.getKey())).value(criteria.getValue()));
-			} else if (criteria.getOperation().equals(SearchOperation.NOT_IN)) {
-				predicates.add(builder.not(root.get(criteria.getKey())).in(criteria.getValue()));
+			if (request.getFechaCita() != null) {
+				predicates.add(criteriaBuilder.equal(root.get("fechaCita"), request.getFechaCita()));
 			}
-		}
 
-		return builder.and(predicates.toArray(new Predicate[0]));
+			if (request.getText() != null && !request.getText().isEmpty()) {
+				predicates.add(criteriaBuilder.or(
+						criteriaBuilder.like(criteriaBuilder.lower(root.get("usuario").get("nombres")),
+								"%" + request.getText().toLowerCase() + "%"),
+						criteriaBuilder.like(criteriaBuilder.lower(root.get("usuario").get("apellidos")),
+								"%" + request.getText().toLowerCase() + "%"),
+						criteriaBuilder.like(criteriaBuilder.lower(root.get("medico").get("nombres")),
+								"%" + request.getText().toLowerCase() + "%"),
+						criteriaBuilder.like(criteriaBuilder.lower(root.get("medico").get("apellidos")),
+								"%" + request.getText().toLowerCase() + "%"),
+						criteriaBuilder.like(
+								criteriaBuilder.lower(root.get("consulta").get("especialidad").get("nombre")),
+								"%" + request.getText().toLowerCase() + "%")));
+			}
+
+			if (request.getEstadoAtencion() != null) {
+				predicates.add(criteriaBuilder.equal(root.get("estadoAtencion"), request.getEstadoAtencion()));
+			}
+
+			if (request.getEstadoPago() != null) {
+				predicates.add(criteriaBuilder.equal(root.get("estadoPago"), request.getEstadoPago()));
+			}
+			
+			if (request.getConsultasIds() != null && !request.getConsultasIds().isEmpty()) {
+				Join<Cita, Consulta> consultas = root.join("consulta");
+				predicates.add(consultas.in(request.getConsultasIds()));
+			}
+
+			query.orderBy(criteriaBuilder.asc(root.get(sortBy)));
+			return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+		};
 	}
+
 }
+
+
+
+
+
+/*
+ * if (request.getNombreUsuario() != null &&
+ * !request.getNombreUsuario().isEmpty()) {
+ * predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("usuario")
+ * .get("nombres")), "%" + request.getNombreUsuario().toLowerCase() + "%")); }
+ * if (request.getApellidoUsuario() != null &&
+ * !request.getApellidoUsuario().isEmpty()) {
+ * predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("usuario")
+ * .get("apellidos")), "%" + request.getApellidoUsuario().toLowerCase() + "%"));
+ * }
+ * 
+ * if (request.getNombreMedico() != null &&
+ * !request.getNombreMedico().isEmpty()) {
+ * predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("medico").
+ * get("nombres")), "%" + request.getNombreMedico().toLowerCase() + "%")); } if
+ * (request.getApellidoMedico() != null &&
+ * !request.getApellidoMedico().isEmpty()) {
+ * predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("medico").
+ * get("apellidos")), "%" + request.getApellidoMedico().toLowerCase() + "%")); }
+ * 
+ * if (request.getNombreEspecialidad() != null &&
+ * !request.getNombreEspecialidad().isEmpty()) {
+ * predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("consulta"
+ * ).get("especialidad").get("nombre")), "%" +
+ * request.getNombreEspecialidad().toLowerCase() + "%"));
+ * 
+ * }
+ */

@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.iudigital.citas.controller.converter.UsuarioConverter;
 import com.iudigital.citas.controller.dto.UsuarioDTO;
 import com.iudigital.citas.domain.Usuario;
+import com.iudigital.citas.domain.filter.PaginationInfo;
+import com.iudigital.citas.domain.filter.UsuarioFilter;
 import com.iudigital.citas.service.UsuarioService;
 
 @RestController
@@ -66,5 +68,16 @@ public class UsuarioController {
 			throw e;
 		}
 	}
+	
+	@PostMapping("/getSpecUsuarios")
+    public List<UsuarioDTO> getUsersList(UsuarioFilter request, PaginationInfo paginationInfo) throws Exception {
+		try {
+		return usuarioService.getSpecList(request, paginationInfo).stream()
+				.map(usuario -> usuarioConverter.convertUsuarioToUsuarioDTO(usuario)).collect(Collectors.toList());
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+    }
 
 }

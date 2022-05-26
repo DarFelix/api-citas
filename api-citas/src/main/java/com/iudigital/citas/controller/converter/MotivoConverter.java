@@ -1,8 +1,11 @@
 package com.iudigital.citas.controller.converter;
 
+import org.springframework.stereotype.Component;
+
 import com.iudigital.citas.controller.dto.MotivoDTO;
 import com.iudigital.citas.domain.Motivo;
 
+@Component
 public class MotivoConverter {
 
 	public Motivo convertMotivoDTOToMotivo(MotivoDTO motivoDTO) {

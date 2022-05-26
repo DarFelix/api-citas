@@ -34,7 +34,7 @@ public class Cita  {
 	private Usuario usuario;
 
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "usuario_id")
+	@JoinColumn(name = "medico_id")
 	private Usuario medico;
 
 	@ManyToOne(fetch = FetchType.EAGER)

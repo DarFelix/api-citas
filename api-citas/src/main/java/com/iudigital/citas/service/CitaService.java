@@ -9,16 +9,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.iudigital.citas.controller.spec.CitaSpecification;
-import com.iudigital.citas.controller.spec.SearchCriteria;
-import com.iudigital.citas.controller.spec.SearchOperation;
 import com.iudigital.citas.data.CitaRepository;
 import com.iudigital.citas.data.UsuarioRepository;
 import com.iudigital.citas.domain.Cita;
 import com.iudigital.citas.domain.Usuario;
+import com.iudigital.citas.domain.filter.CitaFilter;
+import com.iudigital.citas.domain.filter.PaginationInfo;
 import com.iudigital.citas.enums.EstadoAtencion;
 import com.iudigital.citas.enums.EstadoPago;
 
@@ -31,10 +30,14 @@ public class CitaService {
 	@Autowired
 	private UsuarioRepository usuarioRepository;
 
+	@Autowired
+	private CitaSpecification citaSpecification;
+
 	public void createCita(Cita cita) throws Exception {
 
-		List<Cita> citasExistentes = citaRepository.findCitasExistentes(cita.getFechaCita(), cita.getIdMedico());
-		Usuario medicoNuevaCita = usuarioRepository.findMedicoById(cita.getIdMedico());
+		List<Cita> citasExistentes = citaRepository.findCitasExistentes(cita.getFechaCita(),
+				cita.getMedico().getIdUsuario());
+		Usuario medicoNuevaCita = usuarioRepository.findMedicoById(cita.getMedico().getIdUsuario());
 
 		if (citasExistentes.isEmpty() && medicoNuevaCita != null) {
 
@@ -47,12 +50,12 @@ public class CitaService {
 			throw new Exception("Este espacio ya esta ocupado, escoja otra fecha, hora o médico.");
 
 		} else if (medicoNuevaCita == null) {
-			throw new Exception("El médico con Id " + cita.getIdMedico() + " no existe.");
+			throw new Exception("El médico con Id " + cita.getMedico().getIdUsuario() + " no existe.");
 		}
 
 	}
 
-	public List<Cita> getCitas() {
+	public List<Cita> getCitas() throws Exception {
 		List<Cita> citas = (List<Cita>) citaRepository.findAll();
 		return citas;
 	}
@@ -61,9 +64,9 @@ public class CitaService {
 
 		Cita citaInconveniente = citaRepository.findById(idCita).orElse(null);
 		List<Cita> citasExistentes = citaRepository.findCitasExistentes(citaDeseada.getFechaCita(),
-				citaDeseada.getIdMedico());
+				citaDeseada.getMedico().getIdUsuario());
 
-		Usuario medicoNuevaCita = usuarioRepository.findMedicoById(citaDeseada.getIdMedico());
+		Usuario medicoNuevaCita = usuarioRepository.findMedicoById(citaDeseada.getMedico().getIdUsuario());
 
 		LocalDateTime fechaNuevaCita = citaDeseada.getFechaCita();
 
@@ -71,7 +74,8 @@ public class CitaService {
 				&& !(medicoNuevaCita == null)) {
 
 			citaInconveniente.setFechaCita(citaDeseada.getFechaCita());
-			citaInconveniente.setIdMedico(citaDeseada.getIdMedico());
+
+			citaInconveniente.setMedico(citaDeseada.getMedico());
 			citaInconveniente.setEstadoAtencion(EstadoAtencion.PENDIENTE);
 			citaInconveniente.setEstadoPago(EstadoPago.NO_PAGADA);
 			citaInconveniente.setFechaActualizacion(LocalDateTime.now());
@@ -83,7 +87,7 @@ public class CitaService {
 			throw new Exception(
 					"No se permite reprogramación, debe ser después del " + LocalDateTime.now().plusDays(1) + ".");
 		} else if (medicoNuevaCita == null) {
-			throw new Exception("El médico con Id " + citaDeseada.getIdMedico() + " no existe.");
+			throw new Exception("El médico con Id " + citaDeseada.getMedico().getIdUsuario() + " no existe.");
 		}
 
 	}
@@ -152,19 +156,18 @@ public class CitaService {
 		}
 	}
 
-	public List<Cita> getCitasSpec(EstadoPago estadoPago, EstadoAtencion estadoAtencion, String nombreEspec) throws Exception{
-		CitaSpecification citaEstPago = new CitaSpecification();
-		citaEstPago.add(new SearchCriteria("estadoPago", estadoPago , SearchOperation.EQUAL));
-		
-		CitaSpecification citaEstAten = new CitaSpecification();
-		citaEstAten.add(new SearchCriteria("estadoAtencion", estadoAtencion , SearchOperation.EQUAL));
-		
-		CitaSpecification citaIdMed = new CitaSpecification();
-		citaEstAten.add(new SearchCriteria("consulta.especialidad.nombre", 	nombreEspec , SearchOperation.EQUAL));
-		
-		List<Cita> citaSpec = citaRepository.findAll(Specification.where(citaEstPago).or(citaEstAten).or(citaIdMed));
-		return citaSpec;
-		
+	public List<Cita> getSpecCitaList(CitaFilter request, PaginationInfo paginationInfo) throws Exception {
+		Pageable paging = PageRequest.of(paginationInfo.getPageNo() - 1, paginationInfo.getPageSize());
+		Page<Cita> pages = citaRepository.findAll(citaSpecification.getSpeCitas(request, paginationInfo.getSortBy()),
+				paging);
+		return pages.getContent();
+		/*
+		if (pages.hasContent()) {
+			return pages.getContent();
+		} else {
+			return new ArrayList<Cita>();
+		}
+		*/
+
 	}
-	
 }
