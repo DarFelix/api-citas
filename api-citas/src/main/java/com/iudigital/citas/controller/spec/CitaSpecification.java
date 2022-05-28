@@ -33,9 +33,6 @@ public class CitaSpecification {
 						criteriaBuilder.like(criteriaBuilder.lower(root.get("medico").get("nombres")),
 								"%" + request.getText().toLowerCase() + "%"),
 						criteriaBuilder.like(criteriaBuilder.lower(root.get("medico").get("apellidos")),
-								"%" + request.getText().toLowerCase() + "%"),
-						criteriaBuilder.like(
-								criteriaBuilder.lower(root.get("consulta").get("especialidad").get("nombre")),
 								"%" + request.getText().toLowerCase() + "%")));
 			}
 
