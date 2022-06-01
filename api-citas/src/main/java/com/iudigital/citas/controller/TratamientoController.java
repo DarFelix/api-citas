@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,11 +34,13 @@ public class TratamientoController {
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
+	@PreAuthorize("hasRole('MEDIC')")
 	public void createTratamiento(@RequestBody TratamientoDTO tratamientoDTO) {
 		tratamientoService.createTratamiento(tratamientoConverter.convertTratamientoDTOToTratamiento(tratamientoDTO));
 	}
 
 	@GetMapping
+	@PreAuthorize("hasRole('ADMIN')")
 	public List<TratamientoDTO> getTratamientos() {
 		return tratamientoService.getTratamientos().stream()
 				.map(tratamiento -> tratamientoConverter.convertTratamientoToTratamientoDTO(tratamiento))
@@ -45,6 +48,7 @@ public class TratamientoController {
 	}
 
 	@PutMapping("/{idTratamiento}")
+	@PreAuthorize("hasRole('ADMIN')")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void editTratamiento(@PathVariable int idTratamiento, @RequestBody Tratamiento tratamiento)
 			throws Exception {

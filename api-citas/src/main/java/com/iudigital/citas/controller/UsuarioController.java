@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,11 +36,14 @@ public class UsuarioController {
 
 	@PostMapping("/crearMedico")
 	@ResponseStatus(HttpStatus.CREATED)
+	@PreAuthorize("hasRole('ADMIN')")
 	public void createMedico(@RequestBody UsuarioDTO usuarioDTO) {
 		usuarioService.createUsuario(usuarioConverter.convertUsuarioDTOToUsuario(usuarioDTO));
 	}
 
+	
 	@GetMapping
+	@PreAuthorize("hasRole('ADMIN') OR hasRole('MEDIC')")
 	public List<UsuarioDTO> getUsuarios() {
 		return usuarioService.getUsuarios().stream()
 				.map(usuario -> usuarioConverter.convertUsuarioToUsuarioDTO(usuario)).collect(Collectors.toList());
@@ -47,18 +51,27 @@ public class UsuarioController {
 
 	@PutMapping("/{numeroDoc}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@PreAuthorize("hasRole('ADMIN')")
 	public void editUsuario(@PathVariable String numeroDoc, @RequestBody Usuario usuario) throws Exception {
 		usuarioService.editUsuario(numeroDoc, usuario);
 	}
 
 	@PostMapping("/crearUsuario")
 	@ResponseStatus(HttpStatus.CREATED)
-	public void createUsuario(@RequestBody UsuarioDTO usuarioDTO) {
+	@PreAuthorize("hasRole('ADMIN') OR hasRole('CASHIER')")
+	public void createUsuario(@RequestBody UsuarioDTO usuarioDTO) throws Exception {
+		
+		try {
 		usuarioDTO.setEspecialidad(null);
 		usuarioService.createUsuario(usuarioConverter.convertUsuarioDTOToUsuario(usuarioDTO));
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
 	}
 
 	@GetMapping("/{idUsuario}")
+	@PreAuthorize("hasRole('ADMIN')")
 	public UsuarioDTO getUsuario(@PathVariable int idUsuario) throws Exception {
 		
 		try {
@@ -70,6 +83,7 @@ public class UsuarioController {
 	}
 	
 	@PostMapping("/getSpecUsuarios")
+	@PreAuthorize("hasRole('ADMIN') OR hasRole('MEDIC')")
     public List<UsuarioDTO> getUsersList(UsuarioFilter request, PaginationInfo paginationInfo) throws Exception {
 		try {
 		return usuarioService.getSpecList(request, paginationInfo).stream()

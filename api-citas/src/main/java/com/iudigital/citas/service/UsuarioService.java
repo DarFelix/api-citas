@@ -13,6 +13,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.iudigital.citas.data.UsuarioRepository;
@@ -30,11 +31,20 @@ public class UsuarioService implements UserDetailsService{
 
 	@Autowired
 	private UsuarioSpecification usuarioSpecification;
+	
+	@Autowired
+	private BCryptPasswordEncoder passwordEncoder;
 
 	public void createUsuario(Usuario usuario) {
-		usuario.setFechaCreacion(LocalDateTime.now());
+		
+		
+		String pw = passwordEncoder.encode(usuario.getPass());
+		System.out.println(pw);
+		usuario.setPass(pw);
+		
 		usuario.setEstadoUsuario(EstadoUsuario.ACTIVO);
-
+		usuario.setFechaCreacion(LocalDateTime.now());
+	
 		usuarioRepository.save(usuario);
 
 	}

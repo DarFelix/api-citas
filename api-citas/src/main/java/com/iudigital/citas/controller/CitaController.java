@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -40,11 +41,13 @@ public class CitaController {
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
+	@PreAuthorize("hasRole('CASHIER')")
 	public void createCita(@RequestBody CitaDTO citaDTO) throws Exception {
 		citaService.createCita(citaConverter.convertCitaDTOToCita(citaDTO));
 	}
 
 	@GetMapping
+	@PreAuthorize("hasRole('ADMIN') OR hasRole('CASHIER')")
 	public List<CitaDTO> getCitas() throws Exception{
 		try {
 		return citaService.getCitas().stream().map(cita -> citaConverter.convertCitaToCitaDTO(cita))
@@ -57,11 +60,13 @@ public class CitaController {
 
 	@PutMapping("/{idCita}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@PreAuthorize("hasRole('CASHIER')")
 	public void reprogramarCita(@PathVariable Long idCita, @RequestBody Cita cita) throws Exception {
 		citaService.reprogramarCita(idCita, cita);
 	}
 
 	@GetMapping("/between")
+	@PreAuthorize("hasRole('CASHIER')")
 	public List<CitaDTO> getByFechaCitaBetween(
 			@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime desde,
 			@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime hasta) {
@@ -71,12 +76,14 @@ public class CitaController {
 	}
 
 	@GetMapping("/estadoPago")
+	@PreAuthorize("hasRole('CASHIER')")
 	public List<CitaDTO> getCitasEstadoPago(@RequestParam EstadoPago estadoPago) {
 		return citaService.getCitasEstadoPago(estadoPago).stream().map(cita -> citaConverter.convertCitaToCitaDTO(cita))
 				.collect(Collectors.toList());
 	}
 
 	@GetMapping("/estadoAtencion")
+	@PreAuthorize("hasRole('CASHIER')")
 	public List<CitaDTO> getCitasEstadoAtencion(@RequestParam EstadoAtencion estadoAtencion) {
 		return citaService.getCitasEstadoAtencion(estadoAtencion).stream()
 				.map(cita -> citaConverter.convertCitaToCitaDTO(cita)).collect(Collectors.toList());
@@ -84,17 +91,20 @@ public class CitaController {
 
 	@PutMapping("/cancelarCita/{idCita}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@PreAuthorize("hasRole('CASHIER')")
 	public void cancelarCita(@PathVariable Long idCita) throws Exception {
 		citaService.cancelarCita(idCita);
 	}
 
 	@PutMapping("/pagarCita/{idCita}")
+	@PreAuthorize("hasRole('CASHIER')")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void pagarCita(@PathVariable Long idCita) throws Exception {
 		citaService.pagarCita(idCita);
 	}
 
 	@GetMapping("/paging")
+	@PreAuthorize("hasRole('ADMIN') OR hasRole('CASHIER')")
 	public List<CitaDTO> getCitasPaging(@RequestParam Integer pageNo, @RequestParam Integer pageSize,
 			@RequestParam String sortBy) {
 		return citaService.getAllCitas(pageNo, pageSize, sortBy).stream()
@@ -103,6 +113,7 @@ public class CitaController {
 	}
 
 	@PostMapping("/getSpecCitas")
+	@PreAuthorize("hasRole('ADMIN') OR hasRole('CASHIER')")
     public List<CitaDTO> getCitasList(CitaFilter request, PaginationInfo paginationInfo) throws Exception {
 		try {
 		return citaService.getSpecCitaList(request, paginationInfo).stream()

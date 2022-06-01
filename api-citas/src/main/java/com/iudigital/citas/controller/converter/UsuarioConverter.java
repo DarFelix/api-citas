@@ -34,10 +34,13 @@ public class UsuarioConverter {
 		
 		usuario.setEstadoUsuario(usuarioDTO.getEstadoUsuario());
 
+		if(usuarioDTO.getEspecialidad()!= null) {
 		Especialidad especialidad = new Especialidad();
 		especialidad.setIdEspecialidad(usuarioDTO.getEspecialidad().getIdEspecialidad());
 		especialidad.setNombre(usuarioDTO.getEspecialidad().getNombre());
 		usuario.setEspecialidad(especialidad);
+		}
+		
 		usuario.setFechaCreacion(usuarioDTO.getFechaCreacion());
 		usuario.setFechaActualizacion(usuarioDTO.getFechaActualizacion());
 

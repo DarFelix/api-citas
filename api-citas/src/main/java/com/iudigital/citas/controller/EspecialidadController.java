@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,11 +34,13 @@ public class EspecialidadController {
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
+	@PreAuthorize("hasRole('ADMIN')")
 	public void createEspecialidad(@RequestBody EspecialidadDTO especialidadDTO) {
 		especialidadService.createEspecialidad(especialidadConverter.convertEspecialidadDTOToEspecialidad(especialidadDTO));
 	}
 	
 	@GetMapping
+	@PreAuthorize("hasRole('ADMIN') OR hasRole('MEDIC') OR hasRole('CASHIER')")
 	public List<EspecialidadDTO> getEspecialidades() {
 		return especialidadService.getEspecialidades().stream()
 				.map(especialidad -> especialidadConverter.convertEspecialidadToEspecialidadDTO(especialidad)).collect(Collectors.toList());
@@ -45,6 +48,7 @@ public class EspecialidadController {
 
 	@PutMapping("/{idEspecialidad}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@PreAuthorize("hasRole('ADMIN')")
 	public void editEspecialidad(@PathVariable int idEspecialidad, @RequestBody Especialidad especialidad) throws Exception {
 		especialidadService.editEspecialidad(idEspecialidad, especialidad);
 	}
