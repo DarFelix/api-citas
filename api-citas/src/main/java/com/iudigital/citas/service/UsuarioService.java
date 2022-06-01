@@ -1,23 +1,29 @@
 package com.iudigital.citas.service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.iudigital.citas.controller.spec.UsuarioSpecification;
 import com.iudigital.citas.data.UsuarioRepository;
+import com.iudigital.citas.data.spec.UsuarioSpecification;
 import com.iudigital.citas.domain.Usuario;
 import com.iudigital.citas.domain.filter.PaginationInfo;
 import com.iudigital.citas.domain.filter.UsuarioFilter;
 import com.iudigital.citas.enums.EstadoUsuario;
 
 @Service
-public class UsuarioService {
+public class UsuarioService implements UserDetailsService{
 
 	@Autowired
 	private UsuarioRepository usuarioRepository;
@@ -86,6 +92,33 @@ public class UsuarioService {
 //			return new ArrayList<Usuario>();
 //		}
 
+	}
+	
+	
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		
+		Optional<Usuario> optionalUser = usuarioRepository.findByCorreo(username);
+		
+		if (!optionalUser.isPresent()) { //if (optionalUser.isPresent() == false) {
+			
+			throw new UsernameNotFoundException("Usuario no existe");
+			
+		} else {
+			
+			Usuario user = optionalUser.get();
+			
+			List<SimpleGrantedAuthority> roles = new ArrayList<>();
+			
+			roles.add(new SimpleGrantedAuthority("ROLE_"+user.getRol().getIdRol()));
+			
+			UserDetails userDetails = new org.springframework
+					.security.core.userdetails.User(user.getCorreo(), user.getPass(), roles);
+			
+			return userDetails;
+			
+		}
+		
 	}
 
 }

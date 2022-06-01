@@ -3,8 +3,10 @@ package com.iudigital.citas.controller.converter;
 import org.springframework.stereotype.Component;
 
 import com.iudigital.citas.controller.dto.EspecialidadDTO;
+import com.iudigital.citas.controller.dto.RolDTO;
 import com.iudigital.citas.controller.dto.UsuarioDTO;
 import com.iudigital.citas.domain.Especialidad;
+import com.iudigital.citas.domain.Rol;
 import com.iudigital.citas.domain.Usuario;
 
 
@@ -24,6 +26,12 @@ public class UsuarioConverter {
 		usuario.setTelefono(usuarioDTO.getTelefono());
 		usuario.setCorreo(usuarioDTO.getCorreo());
 		usuario.setPass(usuarioDTO.getPass());
+		
+		Rol rol = new Rol();
+		rol.setIdRol(usuarioDTO.getRol().getIdRol());
+		rol.setNombre(usuarioDTO.getRol().getNombre());
+		usuario.setRol(rol);	
+		
 		usuario.setEstadoUsuario(usuarioDTO.getEstadoUsuario());
 
 		Especialidad especialidad = new Especialidad();
@@ -54,6 +62,12 @@ public class UsuarioConverter {
 		usuarioDTO.setPass(pass);
 		}
 	
+		RolDTO rol = new RolDTO();
+		rol.setIdRol(usuario.getRol().getIdRol());
+		rol.setNombre(usuario.getRol().getNombre());
+		usuarioDTO.setRol(rol);	
+		
+		
 		usuarioDTO.setEstadoUsuario(usuario.getEstadoUsuario());
 		
 		

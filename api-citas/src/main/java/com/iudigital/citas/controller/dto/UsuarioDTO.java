@@ -17,6 +17,7 @@ public class UsuarioDTO {
 	private String telefono;
 	private String correo;
 	private String pass;
+	private RolDTO rol;
 	private EstadoUsuario estadoUsuario;
 	private EspecialidadDTO especialidad;
 	private LocalDateTime fechaCreacion;
@@ -92,6 +93,14 @@ public class UsuarioDTO {
 
 	public void setPass(String pass) {
 		this.pass = pass;
+	}
+	
+	public RolDTO getRol() {
+		return rol;
+	}
+
+	public void setRol(RolDTO rol) {
+		this.rol = rol;
 	}
 
 	public EstadoUsuario getEstadoUsuario() {

@@ -1,4 +1,4 @@
-package com.iudigital.citas.controller.spec;
+package com.iudigital.citas.data.spec;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -51,7 +51,11 @@ public class Usuario {
 
 	@Column(name = "pass")
 	private String pass;
-
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "rol_id")
+	private Rol rol;
+	
 	@Enumerated(EnumType.STRING)
 	@Column(name = "estado_usuario")
 	private EstadoUsuario estadoUsuario;
@@ -136,6 +140,14 @@ public class Usuario {
 
 	public void setPass(String pass) {
 		this.pass = pass;
+	}
+	
+	public Rol getRol() {
+		return rol;
+	}
+
+	public void setRol(Rol rol) {
+		this.rol = rol;
 	}
 
 	public EstadoUsuario getEstadoUsuario() {

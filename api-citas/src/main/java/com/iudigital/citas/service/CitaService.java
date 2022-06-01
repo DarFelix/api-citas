@@ -11,9 +11,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import com.iudigital.citas.controller.spec.CitaSpecification;
 import com.iudigital.citas.data.CitaRepository;
 import com.iudigital.citas.data.UsuarioRepository;
+import com.iudigital.citas.data.spec.CitaSpecification;
 import com.iudigital.citas.domain.Cita;
 import com.iudigital.citas.domain.Usuario;
 import com.iudigital.citas.domain.filter.CitaFilter;
