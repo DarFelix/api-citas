@@ -33,8 +33,10 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
 	@Override
 	public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
+
 		clients.inMemory().withClient("servidor-practicas").secret(passwordEncoder.encode("123456"))
 				.scopes("read", "write").authorizedGrantTypes("password").accessTokenValiditySeconds(10800);
+
 	}
 
 	@Override

@@ -1,8 +1,13 @@
 package com.iudigital.citas.domain.filter;
 
+import io.swagger.annotations.ApiParam;
+
 public class PaginationInfo {
 
+	@ApiParam(value = "Numero de pagina")
 	private Integer pageNo;
+	
+	@ApiParam(value = "Tamaño de pagina")
 	private Integer pageSize;
 	private String sortBy;
 

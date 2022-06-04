@@ -28,9 +28,13 @@ import com.iudigital.citas.enums.EstadoAtencion;
 import com.iudigital.citas.enums.EstadoPago;
 import com.iudigital.citas.service.CitaService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
 @RestController
 @RequestMapping("/cita")
 @CrossOrigin("*")
+@Api(value = "Cita", tags = "Cita")
 public class CitaController {
 
 	@Autowired
@@ -42,16 +46,18 @@ public class CitaController {
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	@PreAuthorize("hasRole('CASHIER')")
+	@ApiOperation(value = "Crear cita", tags = "Cita", notes = "Crear nueva cita")
 	public void createCita(@RequestBody CitaDTO citaDTO) throws Exception {
 		citaService.createCita(citaConverter.convertCitaDTOToCita(citaDTO));
 	}
 
 	@GetMapping
 	@PreAuthorize("hasRole('ADMIN') OR hasRole('CASHIER')")
-	public List<CitaDTO> getCitas() throws Exception{
+	@ApiOperation(value = "Obtener listado de citas", tags = "Cita", notes = "Listar citas")
+	public List<CitaDTO> getCitas() throws Exception {
 		try {
-		return citaService.getCitas().stream().map(cita -> citaConverter.convertCitaToCitaDTO(cita))
-				.collect(Collectors.toList());
+			return citaService.getCitas().stream().map(cita -> citaConverter.convertCitaToCitaDTO(cita))
+					.collect(Collectors.toList());
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;
@@ -61,12 +67,14 @@ public class CitaController {
 	@PutMapping("/{idCita}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@PreAuthorize("hasRole('CASHIER')")
+	@ApiOperation(value = "Reprogramar cita", tags = "Cita", notes = "Cambiar fecha cita")
 	public void reprogramarCita(@PathVariable Long idCita, @RequestBody Cita cita) throws Exception {
 		citaService.reprogramarCita(idCita, cita);
 	}
 
 	@GetMapping("/between")
 	@PreAuthorize("hasRole('CASHIER')")
+	@ApiOperation(value = "Obtener citas entre dos fechas", tags = "Cita", notes = "Citas de ? a ?")
 	public List<CitaDTO> getByFechaCitaBetween(
 			@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime desde,
 			@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime hasta) {
@@ -114,14 +122,14 @@ public class CitaController {
 
 	@PostMapping("/getSpecCitas")
 	@PreAuthorize("hasRole('ADMIN') OR hasRole('CASHIER')")
-    public List<CitaDTO> getCitasList(CitaFilter request, PaginationInfo paginationInfo) throws Exception {
+	public List<CitaDTO> getCitasList(CitaFilter request, PaginationInfo paginationInfo) throws Exception {
 		try {
-		return citaService.getSpecCitaList(request, paginationInfo).stream()
-				.map(cita -> citaConverter.convertCitaToCitaDTO(cita)).collect(Collectors.toList());
+			return citaService.getSpecCitaList(request, paginationInfo).stream()
+					.map(cita -> citaConverter.convertCitaToCitaDTO(cita)).collect(Collectors.toList());
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;
 		}
-    }
+	}
 
 }

@@ -21,18 +21,6 @@ import org.springframework.web.filter.CorsFilter;
 @EnableResourceServer
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
-	@Bean
-	public JwtTokenStore tokenStore() {
-		return new JwtTokenStore(accessTokenConverter());
-	}
-
-	@Bean
-	public JwtAccessTokenConverter accessTokenConverter() {
-		JwtAccessTokenConverter tokenConverter = new JwtAccessTokenConverter();
-		tokenConverter.setSigningKey("estoesunallave"); // secret key
-		return tokenConverter;
-	}
-
 	@Override
 	public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
 		resources.tokenStore(tokenStore());
@@ -40,8 +28,18 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests().anyRequest().authenticated().and().cors()
-				.configurationSource(corsConfigurationSource());
+		/*
+		 * http.authorizeRequests().anyRequest().authenticated().and().cors()
+		 * .configurationSource(corsConfigurationSource());
+		 */
+		http.authorizeRequests()
+				.antMatchers("/", "/v2/api-docs", "/configuration/ui", "/swagger-resources", "/configuration/security",
+						"/swagger-ui.html", "/webjars/**", "/swagger-resources/configuration/ui", "/swagger-ui.html",
+						"/swagger-resources/configuration/security")
+				.permitAll()
+				// .antMatchers("/api/user/**")
+				// .permitAll()
+				.anyRequest().authenticated().and().cors().configurationSource(corsConfigurationSource());
 	}
 
 	@Bean
@@ -70,4 +68,17 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 		return bean;
 
 	}
+
+	@Bean
+	public JwtTokenStore tokenStore() {
+		return new JwtTokenStore(accessTokenConverter());
+	}
+
+	@Bean
+	public JwtAccessTokenConverter accessTokenConverter() {
+		JwtAccessTokenConverter tokenConverter = new JwtAccessTokenConverter();
+		tokenConverter.setSigningKey("estoesunallave"); // secret key
+		return tokenConverter;
+	}
+
 }

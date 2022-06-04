@@ -5,9 +5,15 @@ import java.time.LocalDateTime;
 import com.iudigital.citas.enums.EstadoAtencion;
 import com.iudigital.citas.enums.EstadoPago;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+@ApiModel
 public class CitaDTO {
 
 	private Long idCita;
+	
+	@ApiModelProperty(value = "Fecha de cita medica", example = "2022-01-31")
 	private LocalDateTime fechaCita;
 	private UsuarioDTO usuario;
 	private UsuarioDTO medico;
