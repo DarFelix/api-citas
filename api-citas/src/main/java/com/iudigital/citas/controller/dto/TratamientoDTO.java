@@ -2,14 +2,31 @@ package com.iudigital.citas.controller.dto;
 
 import java.time.LocalDateTime;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+@ApiModel
 public class TratamientoDTO {
 
+	@ApiModelProperty(value = "ID de tratamiento", example = "3")
 	private int idTratamiento;
+	
+	@ApiModelProperty(value = "Nombre de tratamiento", example = "Medicación")
 	private String nombre;
+	
+	@ApiModelProperty(value = "Especialidad", example = "Objeto especialidad")
 	private EspecialidadDTO especialidad;
+	
+	@ApiModelProperty(value = "Diagnóstico", example = "Alergia")
 	private String diagnostico;
+	
+	@ApiModelProperty(value = "ID de cita médica", example = "3")
 	private int idCita;
+	
+	@ApiModelProperty(value = "Fecha de creación de cita", example = "2022-01-31 06:00:00")
 	private LocalDateTime fechaCreacion;
+	
+	@ApiModelProperty(value = "Fecha de actualización de cita", example = "2022-01-31 06:00:00")
 	private LocalDateTime fechaActualizacion;
 
 	public int getIdTratamiento() {

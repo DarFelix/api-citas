@@ -4,13 +4,28 @@ import java.time.LocalDateTime;
 
 import com.iudigital.citas.enums.EstadoDescuento;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+@ApiModel
 public class DescuentoMotivoDTO {
 
+	@ApiModelProperty(value = "ID de descuento-motivo", example = "3")
 	private int idDescuentoMotivo;
+	
+	@ApiModelProperty(value = "Motivo de cita", example = "Objeto motivo")
 	private MotivoDTO motivo;
+	
+	@ApiModelProperty(value = "Porcentaje descuento", example = "97")
 	private int porcentaje;
+	
+	@ApiModelProperty(value = "Estado de descuento", example = "ACTIVO")
 	private EstadoDescuento estadoDescuento;
+	
+	@ApiModelProperty(value = "Fecha de creación", example = "2022-01-31 06:00:00")
 	private LocalDateTime fechaCreacion;
+	
+	@ApiModelProperty(value = "Fecha de actualización", example = "2022-01-31 06:00:00")
 	private LocalDateTime fechaActualizacion;
 
 	public int getIdDescuentoMotivo() {

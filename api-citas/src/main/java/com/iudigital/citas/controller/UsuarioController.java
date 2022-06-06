@@ -23,9 +23,13 @@ import com.iudigital.citas.domain.filter.PaginationInfo;
 import com.iudigital.citas.domain.filter.UsuarioFilter;
 import com.iudigital.citas.service.UsuarioService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
 @RestController
 @RequestMapping("/usuario")
 @CrossOrigin("*")
+@Api(value = "Usuario", tags = "Usuario")
 public class UsuarioController {
 
 	@Autowired
@@ -37,6 +41,7 @@ public class UsuarioController {
 	@PostMapping("/crearMedico")
 	@ResponseStatus(HttpStatus.CREATED)
 	@PreAuthorize("hasRole('ADMIN')")
+	@ApiOperation(value = "Crear médico", tags = "Usuario", notes = "Crear usuario para médico en el sistema.")
 	public void createMedico(@RequestBody UsuarioDTO usuarioDTO) {
 		usuarioService.createUsuario(usuarioConverter.convertUsuarioDTOToUsuario(usuarioDTO));
 	}
@@ -44,6 +49,7 @@ public class UsuarioController {
 	
 	@GetMapping
 	@PreAuthorize("hasRole('ADMIN') OR hasRole('MEDIC')")
+	@ApiOperation(value = "Consultar usuarios", tags = "Usuario", notes = "Consultar los usuarios existentes sin importar el rol.")
 	public List<UsuarioDTO> getUsuarios() {
 		return usuarioService.getUsuarios().stream()
 				.map(usuario -> usuarioConverter.convertUsuarioToUsuarioDTO(usuario)).collect(Collectors.toList());
@@ -52,6 +58,7 @@ public class UsuarioController {
 	@PutMapping("/{numeroDoc}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@PreAuthorize("hasRole('ADMIN')")
+	@ApiOperation(value = "Modificar usuario", tags = "Usuario", notes = "Modificar usuario en el sistema.")
 	public void editUsuario(@PathVariable String numeroDoc, @RequestBody Usuario usuario) throws Exception {
 		usuarioService.editUsuario(numeroDoc, usuario);
 	}
@@ -59,6 +66,7 @@ public class UsuarioController {
 	@PostMapping("/crearUsuario")
 	@ResponseStatus(HttpStatus.CREATED)
 	@PreAuthorize("hasRole('ADMIN') OR hasRole('CASHIER')")
+	@ApiOperation(value = "Crear cliente.", tags = "Usuario", notes = "Crear usuario cliente en el sistema")
 	public void createUsuario(@RequestBody UsuarioDTO usuarioDTO) throws Exception {
 		
 		try {
@@ -72,6 +80,7 @@ public class UsuarioController {
 
 	@GetMapping("/{idUsuario}")
 	@PreAuthorize("hasRole('ADMIN')")
+	@ApiOperation(value = "Consultar usuario por id.", tags = "Usuario", notes = "Consultar usuario por id en el sistema.")
 	public UsuarioDTO getUsuario(@PathVariable int idUsuario) throws Exception {
 		
 		try {
@@ -84,6 +93,7 @@ public class UsuarioController {
 	
 	@PostMapping("/getSpecUsuarios")
 	@PreAuthorize("hasRole('ADMIN') OR hasRole('MEDIC')")
+	@ApiOperation(value = "Consultar usuarios mediante especificaciones.", tags = "Usuario", notes = "Consultar usuarios por diferentes criterios de búsqueda.")
     public List<UsuarioDTO> getUsersList(UsuarioFilter request, PaginationInfo paginationInfo) throws Exception {
 		try {
 		return usuarioService.getSpecList(request, paginationInfo).stream()

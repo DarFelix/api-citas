@@ -6,21 +6,52 @@ import java.time.LocalDateTime;
 import com.iudigital.citas.enums.EstadoUsuario;
 import com.iudigital.citas.enums.TipoDocumento;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+@ApiModel
 public class UsuarioDTO {
 
+	@ApiModelProperty(value = "ID de usuario", example = "3")
 	private int idUsuario;
+	
+	@ApiModelProperty(value = "Nombres de usuario", example = "Milena Camila")
 	private String nombres;
+	
+	@ApiModelProperty(value = "Apellidos de usuario", example = "Ruiz Sanchez")
 	private String apellidos;
+	
+	@ApiModelProperty(value = "Tipo de documento", example = "CC")
 	private TipoDocumento tipoDoc;
+	
+	@ApiModelProperty(value = "Número de documento", example = "20333456")
 	private String numeroDoc;
+	
+	@ApiModelProperty(value = "Fecha de nacimiento", example = "1990-01-31")
 	private LocalDate fechaNacimiento;
+	
+	@ApiModelProperty(value = "Teléfono", example = "3005553377")
 	private String telefono;
+	
+	@ApiModelProperty(value = "Correo electrónico", example = "mileru@gmail.com")
 	private String correo;
+	
+	@ApiModelProperty(value = "Contraseña", example = "clave123+")
 	private String pass;
+	
+	@ApiModelProperty(value = "Rol de usuario", example = "Objeto rol")
 	private RolDTO rol;
+	
+	@ApiModelProperty(value = "Estado de usuario", example = "ACTIVO")
 	private EstadoUsuario estadoUsuario;
+	
+	@ApiModelProperty(value = "Especialidad", example = "Objeto especialidad")
 	private EspecialidadDTO especialidad;
+	
+	@ApiModelProperty(value = "Fecha de creación de cita", example = "2022-01-31 06:00:00")
 	private LocalDateTime fechaCreacion;
+	
+	@ApiModelProperty(value = "Fecha de creación de cita", example = "2022-01-31 06:00:00")
 	private LocalDateTime fechaActualizacion;
 
 	public int getIdUsuario() {

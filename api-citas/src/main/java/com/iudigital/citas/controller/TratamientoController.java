@@ -21,9 +21,13 @@ import com.iudigital.citas.controller.dto.TratamientoDTO;
 import com.iudigital.citas.domain.Tratamiento;
 import com.iudigital.citas.service.TratamientoService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
 @RestController
 @RequestMapping("/tratamiento")
 @CrossOrigin("*")
+@Api(value = "Tratamiento", tags = "Tratamiento")
 public class TratamientoController {
 
 	@Autowired
@@ -35,12 +39,14 @@ public class TratamientoController {
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	@PreAuthorize("hasRole('MEDIC')")
+	@ApiOperation(value = "Crear tratamiento", tags = "Tratamiento", notes = "Crear tratamiento que servirá como parámetro.")
 	public void createTratamiento(@RequestBody TratamientoDTO tratamientoDTO) {
 		tratamientoService.createTratamiento(tratamientoConverter.convertTratamientoDTOToTratamiento(tratamientoDTO));
 	}
 
 	@GetMapping
 	@PreAuthorize("hasRole('ADMIN')")
+	@ApiOperation(value = "Consultar tratamientos", tags = "Tratamiento", notes = "Consultar los tratamientos parametrizados existentes.")
 	public List<TratamientoDTO> getTratamientos() {
 		return tratamientoService.getTratamientos().stream()
 				.map(tratamiento -> tratamientoConverter.convertTratamientoToTratamientoDTO(tratamiento))
@@ -50,6 +56,7 @@ public class TratamientoController {
 	@PutMapping("/{idTratamiento}")
 	@PreAuthorize("hasRole('ADMIN')")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@ApiOperation(value = "Modificar tratamiento", tags = "Tratamiento", notes = "Modificar los tratamientos parametrizados existentes.")
 	public void editTratamiento(@PathVariable int idTratamiento, @RequestBody Tratamiento tratamiento)
 			throws Exception {
 		tratamientoService.editTratamiento(idTratamiento, tratamiento);

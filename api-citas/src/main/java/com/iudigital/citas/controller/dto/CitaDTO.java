@@ -11,17 +11,34 @@ import io.swagger.annotations.ApiModelProperty;
 @ApiModel
 public class CitaDTO {
 
+	@ApiModelProperty(value = "ID de cita médica", example = "3")
 	private Long idCita;
 	
-	@ApiModelProperty(value = "Fecha de cita medica", example = "2022-01-31")
+	@ApiModelProperty(value = "Fecha de cita medica", example = "2022-01-31 06:00:00")
 	private LocalDateTime fechaCita;
+	
+	@ApiModelProperty(value = "Usuario de cita", example = "Objeto usuario")
 	private UsuarioDTO usuario;
+	
+	@ApiModelProperty(value = "Médico que atiende cita", example = "Objeto usuario")
 	private UsuarioDTO medico;
+	
+	@ApiModelProperty(value = "Consulta de cita", example = "Objeto consulta")
 	private ConsultaDTO consulta;
+	
+	@ApiModelProperty(value = "Estado de atención", example = "ATENDIDA")
 	private EstadoAtencion estadoAtencion;
+	
+	@ApiModelProperty(value = "Estado de pago", example = "NO_PAGADA")
 	private EstadoPago estadoPago;
+	
+	@ApiModelProperty(value = "Descuento de cita", example = "Objeto descuento")
 	private DescuentoMotivoDTO descuentoMotivo;
+	
+	@ApiModelProperty(value = "Fecha de creación de cita", example = "2022-01-31 06:00:00")
 	private LocalDateTime fechaCreacion;
+	
+	@ApiModelProperty(value = "Fecha de actualización de cita", example = "2022-01-31 06:00:00")
 	private LocalDateTime fechaActualizacion;
 
 	public Long getIdCita() {

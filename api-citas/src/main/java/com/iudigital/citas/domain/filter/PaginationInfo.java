@@ -9,6 +9,8 @@ public class PaginationInfo {
 	
 	@ApiParam(value = "Tamaño de pagina")
 	private Integer pageSize;
+	
+	@ApiParam(value = "Definir orden, por defecto ascendente", allowableValues = "asc, desc")
 	private String sortBy;
 
 	public PaginationInfo() {

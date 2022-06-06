@@ -85,6 +85,7 @@ public class CitaController {
 
 	@GetMapping("/estadoPago")
 	@PreAuthorize("hasRole('CASHIER')")
+	@ApiOperation(value = "Obtener lista de citas según estado de pago", tags = "Cita", notes = "Búsqueda por estado de pago")
 	public List<CitaDTO> getCitasEstadoPago(@RequestParam EstadoPago estadoPago) {
 		return citaService.getCitasEstadoPago(estadoPago).stream().map(cita -> citaConverter.convertCitaToCitaDTO(cita))
 				.collect(Collectors.toList());
@@ -92,6 +93,7 @@ public class CitaController {
 
 	@GetMapping("/estadoAtencion")
 	@PreAuthorize("hasRole('CASHIER')")
+	@ApiOperation(value = "Obtener citas por estado de atención", tags = "Cita", notes = "Búsqueda por estado de atención")
 	public List<CitaDTO> getCitasEstadoAtencion(@RequestParam EstadoAtencion estadoAtencion) {
 		return citaService.getCitasEstadoAtencion(estadoAtencion).stream()
 				.map(cita -> citaConverter.convertCitaToCitaDTO(cita)).collect(Collectors.toList());
@@ -100,6 +102,7 @@ public class CitaController {
 	@PutMapping("/cancelarCita/{idCita}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@PreAuthorize("hasRole('CASHIER')")
+	@ApiOperation(value = "Cancelar cita médica", tags = "Cita", notes = "Cancelación de cita")
 	public void cancelarCita(@PathVariable Long idCita) throws Exception {
 		citaService.cancelarCita(idCita);
 	}
@@ -107,12 +110,14 @@ public class CitaController {
 	@PutMapping("/pagarCita/{idCita}")
 	@PreAuthorize("hasRole('CASHIER')")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@ApiOperation(value = "Pagar cita médica", tags = "Cita", notes = "Pago de cita")
 	public void pagarCita(@PathVariable Long idCita) throws Exception {
 		citaService.pagarCita(idCita);
 	}
 
 	@GetMapping("/paging")
 	@PreAuthorize("hasRole('ADMIN') OR hasRole('CASHIER')")
+	@ApiOperation(value = "Búsqueda de citas y paginación de resultados", tags = "Cita", notes = "Lista de cita paginadas")
 	public List<CitaDTO> getCitasPaging(@RequestParam Integer pageNo, @RequestParam Integer pageSize,
 			@RequestParam String sortBy) {
 		return citaService.getAllCitas(pageNo, pageSize, sortBy).stream()
@@ -122,6 +127,7 @@ public class CitaController {
 
 	@PostMapping("/getSpecCitas")
 	@PreAuthorize("hasRole('ADMIN') OR hasRole('CASHIER')")
+	@ApiOperation(value = "Lista de cita mediante especificación y paginación", tags = "Cita", notes = "Citas por especificación")
 	public List<CitaDTO> getCitasList(CitaFilter request, PaginationInfo paginationInfo) throws Exception {
 		try {
 			return citaService.getSpecCitaList(request, paginationInfo).stream()

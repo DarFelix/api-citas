@@ -21,9 +21,13 @@ import com.iudigital.citas.controller.dto.EspecialidadDTO;
 import com.iudigital.citas.domain.Especialidad;
 import com.iudigital.citas.service.EspecialidadService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
 @RestController
 @RequestMapping("/especialidad")
 @CrossOrigin("*")
+@Api(value = "Especialidad", tags = "Especialidad")
 public class EspecialidadController {
 
 	@Autowired
@@ -35,12 +39,14 @@ public class EspecialidadController {
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	@PreAuthorize("hasRole('ADMIN')")
+	@ApiOperation(value = "Crear especialidad", tags = "Especialidad", notes = "Crear especialidad definida como parámetro.")
 	public void createEspecialidad(@RequestBody EspecialidadDTO especialidadDTO) {
 		especialidadService.createEspecialidad(especialidadConverter.convertEspecialidadDTOToEspecialidad(especialidadDTO));
 	}
 	
 	@GetMapping
 	@PreAuthorize("hasRole('ADMIN') OR hasRole('MEDIC') OR hasRole('CASHIER')")
+	@ApiOperation(value = "Obtener especialidades", tags = "Especialidad", notes = "Consultar las especialidades parametrizadas en el sistema.")
 	public List<EspecialidadDTO> getEspecialidades() {
 		return especialidadService.getEspecialidades().stream()
 				.map(especialidad -> especialidadConverter.convertEspecialidadToEspecialidadDTO(especialidad)).collect(Collectors.toList());
@@ -49,6 +55,7 @@ public class EspecialidadController {
 	@PutMapping("/{idEspecialidad}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@PreAuthorize("hasRole('ADMIN')")
+	@ApiOperation(value = "Modificar especialidad", tags = "Especialidad", notes = "Modificar una especialidad predefinida.")
 	public void editEspecialidad(@PathVariable int idEspecialidad, @RequestBody Especialidad especialidad) throws Exception {
 		especialidadService.editEspecialidad(idEspecialidad, especialidad);
 	}
