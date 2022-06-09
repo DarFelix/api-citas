@@ -19,7 +19,7 @@ import com.iudigital.citas.enums.EstadoPago;
 
 @Entity
 @Table(name = "citas")
-public class Cita  {
+public class Cita {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -137,6 +137,14 @@ public class Cita  {
 
 	public void setFechaActualizacion(LocalDateTime fechaActualizacion) {
 		this.fechaActualizacion = fechaActualizacion;
+	}
+
+	@Override
+	public String toString() {
+		return "Cita [idCita=" + idCita + ", fechaCita=" + fechaCita + ", usuario=" + usuario + ", medico=" + medico
+				+ ", consulta=" + consulta + ", estadoAtencion=" + estadoAtencion + ", estadoPago=" + estadoPago
+				+ ", descuentoMotivo=" + descuentoMotivo + ", fechaCreacion=" + fechaCreacion + ", fechaActualizacion="
+				+ fechaActualizacion + "]";
 	}
 
 }

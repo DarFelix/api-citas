@@ -54,6 +54,10 @@ public class CitaService {
 		}
 
 	}
+	
+	public Cita crearCitaReturn(Cita cita) {
+		return citaRepository.save(cita);
+	}
 
 	public List<Cita> getCitas() throws Exception {
 		List<Cita> citas = (List<Cita>) citaRepository.findAll();

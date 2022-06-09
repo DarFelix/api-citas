@@ -47,7 +47,7 @@ public class DescuentoMotivoController {
 
 	@GetMapping
 	@PreAuthorize("hasRole('ADMIN') OR hasRole('CASHIER')")
-	@ApiOperation(value = "Obtener lista de descuentos", tags = "Descuento", notes = "Consultar los descuentos parametrizados en el descuento.")
+	@ApiOperation(value = "Obtener lista de descuentos", tags = "Descuento", notes = "Consultar los descuentos parametrizados en el sistema.")
 	public List<DescuentoMotivoDTO> getDescuentosMotivos() {
 		return descuentoMotivoService.getDescuentosMotivos().stream().map(
 				descuentoMotivo -> descuentoMotivoConverter.convertDescuentoMotivoToDescuentoMotivoDTO(descuentoMotivo))

@@ -56,5 +56,5 @@ public class CitaFilter {
 	public void setConsultasIds(List<Integer> consultasIds) {
 		this.consultasIds = consultasIds;
 	}
-
+	
 }
