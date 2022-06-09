@@ -6,10 +6,10 @@ public class PaginationInfo {
 
 	@ApiParam(value = "Numero de pagina")
 	private Integer pageNo;
-	
+
 	@ApiParam(value = "Tamaño de pagina")
 	private Integer pageSize;
-	
+
 	@ApiParam(value = "Definir orden, por defecto ascendente", allowableValues = "asc, desc")
 	private String sortBy;
 
@@ -39,6 +39,11 @@ public class PaginationInfo {
 
 	public void setSortBy(String sortBy) {
 		this.sortBy = sortBy;
+	}
+
+	@Override
+	public String toString() {
+		return "PaginationInfo [pageNo=" + pageNo + ", pageSize=" + pageSize + ", sortBy=" + sortBy + "]";
 	}
 
 }

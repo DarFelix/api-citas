@@ -32,70 +32,6 @@ import com.iudigital.citas.service.CitaService;
 @SpringBootTest
 public class CitaServiceTest {
 
-//	@Autowired
-//    private CitaService citaService;
-//	
-//	@Autowired
-//    private CitaRepository citaRepository;
-//	
-//	@Autowired
-//	private UsuarioRepository usuarioRepository;
-//	
-//	@Autowired
-//	private ConsultaRepository consultaRepository;
-//	
-//	@Autowired
-//	private DescuentoMotivoRepository descuentoMotivoRepository;
-//
-//	
-//	@Test
-//	void testCreateCita() throws Exception {
-//		
-//		Cita cita = new Cita();
-//		
-//		cita.setIdCita(24L);
-//		cita.setFechaCita(LocalDateTime.of(2025,Month.JULY, 29, 12, 40, 00));
-//		cita.setUsuario(usuarioRepository.findById(1).orElse(null));
-//		cita.setMedico(usuarioRepository.findById(2).orElse(null));
-//		cita.setConsulta(consultaRepository.findById(1).orElse(null));
-//		cita.setEstadoAtencion(EstadoAtencion.PENDIENTE);
-//		cita.setEstadoPago(EstadoPago.NO_PAGADA);
-//		cita.setDescuentoMotivo(descuentoMotivoRepository.findById(1).orElse(null));
-//		cita.setFechaCreacion(LocalDateTime.of(2022,Month.JUNE, 8, 9, 59, 33));
-//		
-//		citaService.createCita(cita);
-//		
-//		 Boolean actualResult = citaRepository.existsById(24L);
-//	     assertThat(actualResult).isTrue();
-//		
-//	}
-//	
-//	
-//	@Test
-//	void testReprogramarCita() throws Exception {
-//		
-//		Cita cita = new Cita();
-//		
-//		cita.setIdCita(22L);
-//		cita.setFechaCita(LocalDateTime.of(2024,Month.DECEMBER, 29, 14, 40, 00));
-//		cita.setUsuario(usuarioRepository.findById(1).orElse(null));
-//		cita.setMedico(usuarioRepository.findById(2).orElse(null));
-//		cita.setConsulta(consultaRepository.findById(1).orElse(null));
-//		cita.setEstadoAtencion(EstadoAtencion.PENDIENTE);
-//		cita.setEstadoPago(EstadoPago.NO_PAGADA);
-//		cita.setDescuentoMotivo(descuentoMotivoRepository.findById(1).orElse(null));
-//		cita.setFechaCreacion(LocalDateTime.of(2022,Month.JUNE, 8, 9, 59, 33));
-//		
-//		citaService.reprogramarCita(22L, cita);
-//		
-//		 Boolean actualResult = citaRepository.existsById(22L);
-//	     assertThat(actualResult).isTrue();
-//		
-//	}
-//	
-
-	;
-
 	@InjectMocks
 	CitaService citaService;
 
@@ -179,7 +115,6 @@ public class CitaServiceTest {
 		;
 		citaServiceMock.createCita(cita);
 		verify(citaServiceMock, times(1)).createCita(cita);
-		;
 
 	}
 
@@ -357,9 +292,9 @@ public class CitaServiceTest {
 
 		list.add(cita);
 
-		when(citaServiceMock.getAllCitas(1, 1, "And")).thenReturn(list);
+		when(citaServiceMock.getAllCitas(1, 1, "idCita")).thenReturn(list);
 
-		List<Cita> citas = citaServiceMock.getAllCitas(1, 1, "And");
+		List<Cita> citas = citaServiceMock.getAllCitas(1, 1, "idCita");
 
 		assertEquals(list.size(), citas.size());
 
@@ -369,7 +304,7 @@ public class CitaServiceTest {
 	public void getSpecCitaList() throws Exception {
 
 		Cita cita = new Cita();
-		cita.setIdCita(22L);
+		cita.setIdCita(1L);
 		cita.setFechaCita(LocalDateTime.of(2024, Month.DECEMBER, 29, 14, 40, 00));
 		Usuario usuario = new Usuario();
 		usuario.setNombres("Andres");
@@ -392,32 +327,80 @@ public class CitaServiceTest {
 		PaginationInfo paginationInfo1 = new PaginationInfo();
 		paginationInfo1.setPageNo(1);
 		paginationInfo1.setPageSize(1);
-		paginationInfo1.setSortBy("asc");
+		paginationInfo1.setSortBy("idCita");
+	
 
 		when(citaServiceMock.getSpecCitaList(citaFilter1, paginationInfo1)).thenReturn(list);
 
-		CitaFilter citaFilter2 = new CitaFilter();
-		citaFilter2.setFechaCita(LocalDateTime.of(2024, Month.DECEMBER, 29, 14, 40, 00));
-		citaFilter2.setText("And");
-		List<Integer> ids = new ArrayList<Integer>();
-		ids.add(1);
-		citaFilter2.setConsultasIds(ids);
-		citaFilter2.setEstadoAtencion(EstadoAtencion.PENDIENTE);
-		citaFilter2.setEstadoPago(EstadoPago.PAGADA);
+		
+		List<Cita> citas = citaServiceMock.getSpecCitaList(citaFilter1, paginationInfo1);
 
-		PaginationInfo paginationInfo2 = new PaginationInfo();
-		paginationInfo2.setPageNo(1);
-		paginationInfo2.setPageSize(1);
-		paginationInfo2.setSortBy("asc");
-
-		List<Cita> citas = citaServiceMock.getSpecCitaList(citaFilter2, paginationInfo2);
-
-		System.out.println(list);
-		System.out.println("-----------");
-		System.out.println(citas);
 
 		assertEquals(list.size(), citas.size());
 
 	}
 
 }
+
+
+//@Autowired
+//private CitaService citaService;
+//
+//@Autowired
+//private CitaRepository citaRepository;
+//
+//@Autowired
+//private UsuarioRepository usuarioRepository;
+//
+//@Autowired
+//private ConsultaRepository consultaRepository;
+//
+//@Autowired
+//private DescuentoMotivoRepository descuentoMotivoRepository;
+//
+//
+//@Test
+//void testCreateCita() throws Exception {
+//	
+//	Cita cita = new Cita();
+//	
+//	cita.setIdCita(24L);
+//	cita.setFechaCita(LocalDateTime.of(2025,Month.JULY, 29, 12, 40, 00));
+//	cita.setUsuario(usuarioRepository.findById(1).orElse(null));
+//	cita.setMedico(usuarioRepository.findById(2).orElse(null));
+//	cita.setConsulta(consultaRepository.findById(1).orElse(null));
+//	cita.setEstadoAtencion(EstadoAtencion.PENDIENTE);
+//	cita.setEstadoPago(EstadoPago.NO_PAGADA);
+//	cita.setDescuentoMotivo(descuentoMotivoRepository.findById(1).orElse(null));
+//	cita.setFechaCreacion(LocalDateTime.of(2022,Month.JUNE, 8, 9, 59, 33));
+//	
+//	citaService.createCita(cita);
+//	
+//	 Boolean actualResult = citaRepository.existsById(24L);
+//   assertThat(actualResult).isTrue();
+//	
+//}
+//
+//
+//@Test
+//void testReprogramarCita() throws Exception {
+//	
+//	Cita cita = new Cita();
+//	
+//	cita.setIdCita(22L);
+//	cita.setFechaCita(LocalDateTime.of(2024,Month.DECEMBER, 29, 14, 40, 00));
+//	cita.setUsuario(usuarioRepository.findById(1).orElse(null));
+//	cita.setMedico(usuarioRepository.findById(2).orElse(null));
+//	cita.setConsulta(consultaRepository.findById(1).orElse(null));
+//	cita.setEstadoAtencion(EstadoAtencion.PENDIENTE);
+//	cita.setEstadoPago(EstadoPago.NO_PAGADA);
+//	cita.setDescuentoMotivo(descuentoMotivoRepository.findById(1).orElse(null));
+//	cita.setFechaCreacion(LocalDateTime.of(2022,Month.JUNE, 8, 9, 59, 33));
+//	
+//	citaService.reprogramarCita(22L, cita);
+//	
+//	 Boolean actualResult = citaRepository.existsById(22L);
+//   assertThat(actualResult).isTrue();
+//	
+//}
+//

@@ -161,6 +161,7 @@ public class CitaService {
 	}
 
 	public List<Cita> getSpecCitaList(CitaFilter request, PaginationInfo paginationInfo) throws Exception {
+	
 		Pageable paging = PageRequest.of(paginationInfo.getPageNo() - 1, paginationInfo.getPageSize());
 		Page<Cita> pages = citaRepository.findAll(citaSpecification.getSpeCitas(request, paginationInfo.getSortBy()),
 				paging);
@@ -172,6 +173,7 @@ public class CitaService {
 			return new ArrayList<Cita>();
 		}
 		*/
+
 
 	}
 }

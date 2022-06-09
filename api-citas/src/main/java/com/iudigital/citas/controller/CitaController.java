@@ -129,6 +129,7 @@ public class CitaController {
 	@PreAuthorize("hasRole('ADMIN') OR hasRole('CASHIER')")
 	@ApiOperation(value = "Lista de cita mediante especificación y paginación", tags = "Cita", notes = "Citas por especificación")
 	public List<CitaDTO> getCitasList(CitaFilter request, PaginationInfo paginationInfo) throws Exception {
+		
 		try {
 			return citaService.getSpecCitaList(request, paginationInfo).stream()
 					.map(cita -> citaConverter.convertCitaToCitaDTO(cita)).collect(Collectors.toList());
