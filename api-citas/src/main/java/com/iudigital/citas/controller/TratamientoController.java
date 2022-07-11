@@ -45,7 +45,7 @@ public class TratamientoController {
 	}
 
 	@GetMapping
-	@PreAuthorize("hasRole('ADMIN')")
+	@PreAuthorize("hasRole('MEDIC') or hasRole('ADMIN')")
 	@ApiOperation(value = "Consultar tratamientos", tags = "Tratamiento", notes = "Consultar los tratamientos parametrizados existentes.")
 	public List<TratamientoDTO> getTratamientos() {
 		return tratamientoService.getTratamientos().stream()
@@ -54,7 +54,7 @@ public class TratamientoController {
 	}
 
 	@PutMapping("/{idTratamiento}")
-	@PreAuthorize("hasRole('ADMIN')")
+	@PreAuthorize("hasRole('MEDIC')")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@ApiOperation(value = "Modificar tratamiento", tags = "Tratamiento", notes = "Modificar los tratamientos parametrizados existentes.")
 	public void editTratamiento(@PathVariable int idTratamiento, @RequestBody Tratamiento tratamiento)

@@ -40,8 +40,13 @@ public class EspecialidadController {
 	@ResponseStatus(HttpStatus.CREATED)
 	@PreAuthorize("hasRole('ADMIN')")
 	@ApiOperation(value = "Crear especialidad", tags = "Especialidad", notes = "Crear especialidad definida como parámetro.")
-	public void createEspecialidad(@RequestBody EspecialidadDTO especialidadDTO) {
+	public void createEspecialidad(@RequestBody EspecialidadDTO especialidadDTO) throws Exception {
+		try {
 		especialidadService.createEspecialidad(especialidadConverter.convertEspecialidadDTOToEspecialidad(especialidadDTO));
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
 	}
 	
 	@GetMapping

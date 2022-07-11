@@ -12,7 +12,7 @@ public class EspecialidadDTO {
 	@ApiModelProperty(value = "Nombre de especialidad", example = "Medicina general")
 	private String nombre;
 
-	public int getIdEspecialidad() {
+	public Integer getIdEspecialidad() {
 		return idEspecialidad;
 	}
 
