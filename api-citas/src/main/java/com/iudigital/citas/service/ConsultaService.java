@@ -40,4 +40,15 @@ public class ConsultaService {
 		}
 
 	}
+
+	public Consulta getConsultaById(int idConsulta) throws Exception {
+
+		Consulta consulta = consultaRepository.findById(idConsulta).orElse(null);
+		if (consulta != null) {
+			return consulta;
+		} else {
+			throw new Exception("No existe consulta");
+		}
+
+	}
 }

@@ -2,13 +2,17 @@ package com.iudigital.citas.service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.iudigital.citas.data.CitaRepository;
@@ -54,7 +58,7 @@ public class CitaService {
 		}
 
 	}
-	
+
 	public Cita crearCitaReturn(Cita cita) {
 		return citaRepository.save(cita);
 	}
@@ -78,10 +82,7 @@ public class CitaService {
 				&& !(medicoNuevaCita == null)) {
 
 			citaInconveniente.setFechaCita(citaDeseada.getFechaCita());
-
 			citaInconveniente.setMedico(citaDeseada.getMedico());
-			citaInconveniente.setEstadoAtencion(EstadoAtencion.PENDIENTE);
-			citaInconveniente.setEstadoPago(EstadoPago.NO_PAGADA);
 			citaInconveniente.setFechaActualizacion(LocalDateTime.now());
 
 			citaRepository.save(citaInconveniente);
@@ -148,6 +149,17 @@ public class CitaService {
 		}
 
 	}
+	
+	public Cita getCitaById(Long idCita)throws Exception {
+		
+		Cita cita = citaRepository.findById(idCita).orElse(null);
+		if( cita!= null) {
+		return cita;
+		} else {
+			throw new Exception("La cita con id "+idCita+" no existe.");
+		}
+		
+	}
 
 	public List<Cita> getAllCitas(Integer pageNo, Integer pageSize, String sortBy) {
 		Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
@@ -161,19 +173,94 @@ public class CitaService {
 	}
 
 	public List<Cita> getSpecCitaList(CitaFilter request, PaginationInfo paginationInfo) throws Exception {
-	
-		Pageable paging = PageRequest.of(paginationInfo.getPageNo() - 1, paginationInfo.getPageSize());
+
+		Pageable paging = PageRequest.of(paginationInfo.getPageNo(), paginationInfo.getPageSize());
 		Page<Cita> pages = citaRepository.findAll(citaSpecification.getSpeCitas(request, paginationInfo.getSortBy()),
 				paging);
 		return pages.getContent();
 		/*
-		if (pages.hasContent()) {
-			return pages.getContent();
-		} else {
-			return new ArrayList<Cita>();
-		}
-		*/
-
+		 * if (pages.hasContent()) { return pages.getContent(); } else { return new
+		 * ArrayList<Cita>(); }
+		 */
 
 	}
+	
+	
+	public ResponseEntity<Map<String, Object>> busquedaCitasSpec(CitaFilter request, PaginationInfo paginationInfo) throws Exception{
+		
+		List<Cita> cits = new ArrayList<Cita>();
+		Pageable paging = PageRequest.of(  paginationInfo.getPageNo(), paginationInfo.getPageSize());
+		Page<Cita> pageCits = citaRepository.findAll(citaSpecification.getSpeCitas(request, paginationInfo.getSortBy()), paging);
+		
+		cits = pageCits.getContent();
+		
+		Map<String, Object> response = new HashMap<>();
+		response.put("citas", cits);
+		response.put("currentPage", pageCits.getNumber());
+		response.put("totalItems", pageCits.getTotalElements());
+		response.put("totalPages", pageCits.getTotalPages());
+		
+		
+		return new ResponseEntity<>(response, HttpStatus.OK);
+		
+	}
+
+	public ResponseEntity<Map<String, Object>> getAllCits(int page, int size, String sortBy) {
+
+		try {
+			List<Cita> cits = new ArrayList<Cita>();
+			Pageable paging = PageRequest.of(page, size, Sort.by(sortBy));
+
+			Page<Cita> pageCits;
+
+			pageCits = citaRepository.findAll(paging);
+
+			cits = pageCits.getContent();
+
+			Map<String, Object> response = new HashMap<>();
+			response.put("citas", cits);
+			response.put("currentPage", pageCits.getNumber());
+			response.put("totalItems", pageCits.getTotalElements());
+			response.put("totalPages", pageCits.getTotalPages());
+			
+			
+			return new ResponseEntity<>(response, HttpStatus.OK);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+
+	}
+	
+	
+	public ResponseEntity<Map<String, Object>> getCitasPendientesPac(int page, int size, String documento){
+		
+		try {
+			List<Cita> cits = new ArrayList<Cita>();
+			Pageable paging = PageRequest.of(page, size, Sort.by("cita_id"));
+			
+			Page<Cita> pageCits;
+			
+			Usuario usuario = usuarioRepository.findBynumeroDoc(documento);
+			
+			pageCits = citaRepository.findPendientesByIdPaciente(usuario.getIdUsuario(), paging);
+			
+			cits = pageCits.getContent();
+			Map<String, Object> response = new HashMap<>();
+			response.put("citas", cits);
+			response.put("currentPage", pageCits.getNumber());
+			response.put("totalItems", pageCits.getTotalElements());
+			response.put("totalPages", pageCits.getTotalPages());
+			
+			
+			return new ResponseEntity<>(response, HttpStatus.OK);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+		
+	}
+
 }

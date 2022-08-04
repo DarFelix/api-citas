@@ -2,11 +2,13 @@ package com.iudigital.citas.controller;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -45,10 +47,15 @@ public class CitaController {
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	@PreAuthorize("hasRole('CASHIER')")
+	@PreAuthorize("hasRole('ADMIN') OR hasRole('CASHIER')")
 	@ApiOperation(value = "Crear cita", tags = "Cita", notes = "Crear nueva cita")
 	public void createCita(@RequestBody CitaDTO citaDTO) throws Exception {
+		try {
 		citaService.createCita(citaConverter.convertCitaDTOToCita(citaDTO));
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
 	}
 
 	@GetMapping
@@ -66,7 +73,7 @@ public class CitaController {
 
 	@PutMapping("/{idCita}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	@PreAuthorize("hasRole('CASHIER')")
+	@PreAuthorize("hasRole('ADMIN') OR hasRole('CASHIER')")
 	@ApiOperation(value = "Reprogramar cita", tags = "Cita", notes = "Cambiar fecha cita")
 	public void reprogramarCita(@PathVariable Long idCita, @RequestBody Cita cita) throws Exception {
 		citaService.reprogramarCita(idCita, cita);
@@ -101,18 +108,30 @@ public class CitaController {
 
 	@PutMapping("/cancelarCita/{idCita}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	@PreAuthorize("hasRole('CASHIER')")
+	@PreAuthorize("hasRole('ADMIN') OR hasRole('CASHIER')")
 	@ApiOperation(value = "Cancelar cita médica", tags = "Cita", notes = "Cancelación de cita")
 	public void cancelarCita(@PathVariable Long idCita) throws Exception {
 		citaService.cancelarCita(idCita);
 	}
 
-	@PutMapping("/pagarCita/{idCita}")
-	@PreAuthorize("hasRole('CASHIER')")
+	@PutMapping("/pay/{idCita}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@PreAuthorize("hasRole('ADMIN') OR hasRole('CASHIER')")
 	@ApiOperation(value = "Pagar cita médica", tags = "Cita", notes = "Pago de cita")
 	public void pagarCita(@PathVariable Long idCita) throws Exception {
+		try {
 		citaService.pagarCita(idCita);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+	}
+	
+	@GetMapping("/{idCita}")
+	@PreAuthorize("hasRole('ADMIN') OR hasRole('CASHIER')")
+	@ApiOperation(value = "Búsqueda de cita por id", tags = "Cita", notes = "JSON de cita según id")
+	public CitaDTO getCitaById(@PathVariable Long idCita) throws Exception {
+		return citaConverter.convertCitaToCitaDTO(citaService.getCitaById(idCita));
 	}
 
 	@GetMapping("/paging")
@@ -138,5 +157,47 @@ public class CitaController {
 			throw e;
 		}
 	}
+	
+	
+	@PostMapping("/search")
+	@PreAuthorize("hasRole('ADMIN') OR hasRole('CASHIER')")
+	@ApiOperation(value = "Lista de cita mediante especificación y paginación en el servidor", tags = "Cita", notes = "Citas por especificación")
+	public ResponseEntity<Map<String, Object>> getCitasSearch(CitaFilter request, PaginationInfo paginationInfo) throws Exception {
+		
+		try {
+			return citaService.busquedaCitasSpec(request, paginationInfo);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+	}
+	
+	
+	
+	@GetMapping("/cits")
+	@PreAuthorize("hasRole('ADMIN') OR hasRole('CASHIER')")
+	@ApiOperation(value = "Lista de cita mediante filtro y paginación", tags = "Cita", notes = "Citas paginadas")
+	public ResponseEntity<Map<String, Object>> getAllCits( 
+			@RequestParam(defaultValue = "0") int page,
+			@RequestParam(defaultValue = "3") int size,
+			String sortBy) {
+		
+		return citaService.getAllCits( page, size, sortBy);
+		
+	}
+	
+	@GetMapping("/citasXpacPendientesPag")
+	@PreAuthorize("hasRole('ADMIN') OR hasRole('CASHIER')")
+	@ApiOperation(value = "Lista de cita mediante filtro y paginación", tags = "Cita", notes = "Citas paginadas")
+	public ResponseEntity<Map<String, Object>> getCitasPendPac(
+			@RequestParam(defaultValue = "0") int page,
+			@RequestParam(defaultValue = "3") int size,
+			@RequestParam String documento){
+		return citaService.getCitasPendientesPac(page, size, documento);
+	}
+	
+	
+	
+	
 
 }

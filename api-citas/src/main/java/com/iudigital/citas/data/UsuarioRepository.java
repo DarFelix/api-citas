@@ -1,5 +1,6 @@
 package com.iudigital.citas.data;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -20,5 +21,8 @@ public interface UsuarioRepository extends CrudRepository<Usuario, Integer>,
 	public Usuario findMedicoById(int idUsuario);
 	
 	public Optional<Usuario> findByCorreo(String correo);
+	
+	@Query(value = "select * from usuarios u where u.especialidad_id = :idEspecialidad", nativeQuery = true)
+	public List<Usuario> findMedicoByEspecialidad(Integer idEspecialidad);
 
 }

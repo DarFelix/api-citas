@@ -46,7 +46,7 @@ public class ConsultaController {
 	}
 	
 	@GetMapping
-	@PreAuthorize("hasRole('ADMIN') OR hasRole('MEDIC')")
+	@PreAuthorize("hasRole('ADMIN') OR hasRole('MEDIC') OR hasRole('CASHIER')")
 	@ApiOperation(value = "Obtener consultas", tags = "Cita", notes = "Consultar las consultas paramatrizadas existentes.")
 	public List<ConsultaDTO> getConsultas() {
 		return consultaService.getConsultas().stream()
@@ -61,5 +61,17 @@ public class ConsultaController {
 		consultaService.editConsulta(idConsulta, consulta);
 	}
 	
+	@GetMapping("/{idConsulta}")
+	@PreAuthorize("hasRole('ADMIN') OR hasRole('CASHIER')")
+	@ApiOperation(value = "Buscar consulta por id.", tags = "Consulta", notes = "Buscar consulta por id en el sistema.")
+	public ConsultaDTO getConsultaById(@PathVariable int idConsulta) throws Exception {
+
+		try {
+			return consultaConverter.convertConsultaToConsultaDTO(consultaService.getConsultaById(idConsulta));
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+	}
 	
 }

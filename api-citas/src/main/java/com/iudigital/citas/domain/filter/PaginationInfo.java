@@ -1,17 +1,22 @@
 package com.iudigital.citas.domain.filter;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+
 import io.swagger.annotations.ApiParam;
 
 public class PaginationInfo {
 
 	@ApiParam(value = "Numero de pagina")
-	private Integer pageNo;
+	private Integer pageNo = 0;
 
+	@Min(value = 0, message = "error.pagination.size.min")
+	@Max(value = 9, message = "error.pagination.size.max")
 	@ApiParam(value = "Tamaño de pagina")
-	private Integer pageSize;
+	private Integer pageSize = 3;
 
 	@ApiParam(value = "Definir orden, por defecto ascendente", allowableValues = "asc, desc")
-	private String sortBy;
+	private String sortBy = "idCita";
 
 	public PaginationInfo() {
 

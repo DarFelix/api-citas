@@ -48,4 +48,20 @@ public class DescuentoMotivoService {
 		}
 
 	}
+	
+	public List<DescuentoMotivo> getDescuentosActivos() {
+		List<DescuentoMotivo> descuentosActivos = descuentoMotivoRepository.findDescuentosActivos();
+		return descuentosActivos;
+	}
+	
+	public DescuentoMotivo getDescuentoById(int idDescuento) throws Exception {
+
+		DescuentoMotivo descuento = descuentoMotivoRepository.findById(idDescuento).orElse(null);
+		if (descuento != null) {
+			return descuento;
+		} else {
+			throw new Exception("No existe descuento");
+		}
+
+	}
 }

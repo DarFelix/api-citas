@@ -46,7 +46,6 @@ public class UsuarioController {
 		usuarioService.createUsuario(usuarioConverter.convertUsuarioDTOToUsuario(usuarioDTO));
 	}
 
-	
 	@GetMapping
 	@PreAuthorize("hasRole('ADMIN') OR hasRole('MEDIC')")
 	@ApiOperation(value = "Consultar usuarios", tags = "Usuario", notes = "Consultar los usuarios existentes sin importar el rol.")
@@ -68,10 +67,10 @@ public class UsuarioController {
 	@PreAuthorize("hasRole('ADMIN') OR hasRole('CASHIER')")
 	@ApiOperation(value = "Crear cliente.", tags = "Usuario", notes = "Crear usuario cliente en el sistema")
 	public void createUsuario(@RequestBody UsuarioDTO usuarioDTO) throws Exception {
-		
+
 		try {
-		usuarioDTO.setEspecialidad(null);
-		usuarioService.createUsuario(usuarioConverter.convertUsuarioDTOToUsuario(usuarioDTO));
+			usuarioDTO.setEspecialidad(null);
+			usuarioService.createUsuario(usuarioConverter.convertUsuarioDTOToUsuario(usuarioDTO));
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;
@@ -82,26 +81,52 @@ public class UsuarioController {
 	@PreAuthorize("hasRole('ADMIN')")
 	@ApiOperation(value = "Consultar usuario por id.", tags = "Usuario", notes = "Consultar usuario por id en el sistema.")
 	public UsuarioDTO getUsuario(@PathVariable int idUsuario) throws Exception {
-		
+
 		try {
-		return usuarioConverter.convertUsuarioToUsuarioDTO(usuarioService.getUsuarioById(idUsuario));
+			return usuarioConverter.convertUsuarioToUsuarioDTO(usuarioService.getUsuarioById(idUsuario));
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+	}
+
+	@GetMapping("/documento/{documento}")
+	@PreAuthorize("hasRole('ADMIN') OR hasRole('CASHIER') OR hasRole('MEDIC')")
+	@ApiOperation(value = "Consultar usuario por documento.", tags = "Usuario", notes = "Consultar usuario por documento en el sistema.")
+	public UsuarioDTO getUsuarioByDoc(@PathVariable String documento) throws Exception {
+
+		try {
+			return usuarioConverter.convertUsuarioToUsuarioDTO(usuarioService.getUserByDoc(documento));
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+	}
+
+	@PostMapping("/getSpecUsuarios")
+	@PreAuthorize("hasRole('ADMIN') OR hasRole('MEDIC')")
+	@ApiOperation(value = "Consultar usuarios mediante especificaciones.", tags = "Usuario", notes = "Consultar usuarios por diferentes criterios de búsqueda.")
+	public List<UsuarioDTO> getUsersList(UsuarioFilter request, PaginationInfo paginationInfo) throws Exception {
+		try {
+			return usuarioService.getSpecList(request, paginationInfo).stream()
+					.map(usuario -> usuarioConverter.convertUsuarioToUsuarioDTO(usuario)).collect(Collectors.toList());
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;
 		}
 	}
 	
-	@PostMapping("/getSpecUsuarios")
-	@PreAuthorize("hasRole('ADMIN') OR hasRole('MEDIC')")
-	@ApiOperation(value = "Consultar usuarios mediante especificaciones.", tags = "Usuario", notes = "Consultar usuarios por diferentes criterios de búsqueda.")
-    public List<UsuarioDTO> getUsersList(UsuarioFilter request, PaginationInfo paginationInfo) throws Exception {
+	@GetMapping("/medicosConsulta/{idEspecialidad}")
+	@PreAuthorize("hasRole('ADMIN') OR hasRole('CASHIER') OR hasRole('MEDIC')")
+	@ApiOperation(value = "Consultar médicos por especialidad.", tags = "Médico", notes = "Consultar médicos por id de especialidad en el sistema.")
+	public List<UsuarioDTO>getMedicosByEspecialidad(@PathVariable Integer idEspecialidad) throws Exception {
+
 		try {
-		return usuarioService.getSpecList(request, paginationInfo).stream()
-				.map(usuario -> usuarioConverter.convertUsuarioToUsuarioDTO(usuario)).collect(Collectors.toList());
+			return usuarioService.getMedicosByConsulta(idEspecialidad).stream()
+					.map(usuario -> usuarioConverter.convertUsuarioToUsuarioDTO(usuario)).collect(Collectors.toList());
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;
 		}
-    }
-
+	}
 }

@@ -90,6 +90,19 @@ public class UsuarioService implements UserDetailsService{
 		}
 
 	}
+	
+	public Usuario getUserByDoc(String documento) throws Exception {
+		
+		Usuario usuario = usuarioRepository.findBynumeroDoc(documento);
+		if (usuario != null) {
+			return usuario;
+		} else {
+			throw new Exception("No existe usuario");
+		}
+		
+	}
+	
+	
 
 	public List<Usuario> getSpecList(UsuarioFilter request, PaginationInfo paginationInfo) throws Exception{
 		Pageable paging = PageRequest.of(paginationInfo.getPageNo() - 1, paginationInfo.getPageSize());
@@ -103,6 +116,14 @@ public class UsuarioService implements UserDetailsService{
 //		}
 
 	}
+	
+	
+	public List<Usuario> getMedicosByConsulta(Integer idEspecialidad) throws Exception {
+		
+		List<Usuario> usuarios = usuarioRepository.findMedicoByEspecialidad(idEspecialidad);
+		return usuarios;
+	}
+	
 	
 	
 	@Override

@@ -3,6 +3,8 @@ package com.iudigital.citas.data;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -23,5 +25,8 @@ public interface CitaRepository extends PagingAndSortingRepository<Cita, Long>, 
 	public List<Cita> findByestadoPago(EstadoPago estadoPago);
 
 	public List<Cita> findByestadoAtencion(EstadoAtencion estadoAtencion);
+	
+	@Query(value = "select * from citas c where c.estado_atencion = 'PENDIENTE' and c.usuario_id = :idUsuario", nativeQuery = true)
+	Page<Cita> findPendientesByIdPaciente(int idUsuario, Pageable pageable );
 
 }

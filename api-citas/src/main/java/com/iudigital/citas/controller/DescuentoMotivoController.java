@@ -62,4 +62,28 @@ public class DescuentoMotivoController {
 			throws Exception {
 		descuentoMotivoService.editDescuentoMotivo(idDescuentoMotivo, descuentoMotivo);
 	}
+	
+	@GetMapping("/descuentosActivos")
+	@PreAuthorize("hasRole('ADMIN') OR hasRole('CASHIER')")
+	@ApiOperation(value = "Obtener lista de descuentos activos", tags = "Descuento", notes = "Consultar los descuentos activos en el sistema.")
+	public List<DescuentoMotivoDTO> getDescuentosActivos() {
+		return descuentoMotivoService.getDescuentosActivos().stream().map(
+				descuentoMotivo -> descuentoMotivoConverter.convertDescuentoMotivoToDescuentoMotivoDTO(descuentoMotivo))
+				.collect(Collectors.toList());
+	}
+	
+	@GetMapping("/{idDescuento}")
+	@PreAuthorize("hasRole('ADMIN') OR hasRole('CASHIER')")
+	@ApiOperation(value = "Buscar descuento por id.", tags = "Descuento", notes = "Buscar descuento por id en el sistema.")
+	public DescuentoMotivoDTO getDescuentoById(@PathVariable int idDescuento) throws Exception {
+
+		try {
+			return descuentoMotivoConverter.convertDescuentoMotivoToDescuentoMotivoDTO(descuentoMotivoService.getDescuentoById(idDescuento));
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+	}
+	
+	
 }
