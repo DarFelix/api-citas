@@ -1,27 +1,25 @@
 package com.iudigital.citas.domain.filter;
 
-import java.time.LocalDateTime;
 import java.util.List;
-
-import org.springframework.format.annotation.DateTimeFormat;
 
 import com.iudigital.citas.enums.EstadoAtencion;
 import com.iudigital.citas.enums.EstadoPago;
 
 public class CitaFilter {
 
-	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-	private LocalDateTime fechaCita;
+	//@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+	// for type LocalDateTime
+	private String fechaCita;
 	private String text;
 	private List<Integer> consultasIds;
 	private EstadoAtencion estadoAtencion;
 	private EstadoPago estadoPago;
 
-	public LocalDateTime getFechaCita() {
+	public String getFechaCita() {
 		return fechaCita;
 	}
 
-	public void setFechaCita(LocalDateTime fechaCita) {
+	public void setFechaCita(String fechaCita) {
 		this.fechaCita = fechaCita;
 	}
 

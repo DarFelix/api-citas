@@ -8,7 +8,7 @@ import io.swagger.annotations.ApiParam;
 public class PaginationInfo {
 
 	@ApiParam(value = "Numero de pagina")
-	private Integer pageNo = 0;
+	private Integer page = 0;
 
 	@Min(value = 0, message = "error.pagination.size.min")
 	@Max(value = 9, message = "error.pagination.size.max")
@@ -22,12 +22,12 @@ public class PaginationInfo {
 
 	}
 
-	public Integer getPageNo() {
-		return pageNo;
+	public Integer getPage() {
+		return page;
 	}
 
-	public void setPageNo(Integer pageNo) {
-		this.pageNo = pageNo;
+	public void setPage(Integer page) {
+		this.page = page;
 	}
 
 	public Integer getPageSize() {
@@ -48,7 +48,7 @@ public class PaginationInfo {
 
 	@Override
 	public String toString() {
-		return "PaginationInfo [pageNo=" + pageNo + ", pageSize=" + pageSize + ", sortBy=" + sortBy + "]";
+		return "PaginationInfo [page=" + page + ", pageSize=" + pageSize + ", sortBy=" + sortBy + "]";
 	}
 
 }

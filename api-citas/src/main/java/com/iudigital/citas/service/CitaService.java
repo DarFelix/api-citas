@@ -174,7 +174,7 @@ public class CitaService {
 
 	public List<Cita> getSpecCitaList(CitaFilter request, PaginationInfo paginationInfo) throws Exception {
 
-		Pageable paging = PageRequest.of(paginationInfo.getPageNo(), paginationInfo.getPageSize());
+		Pageable paging = PageRequest.of(paginationInfo.getPage(), paginationInfo.getPageSize());
 		Page<Cita> pages = citaRepository.findAll(citaSpecification.getSpeCitas(request, paginationInfo.getSortBy()),
 				paging);
 		return pages.getContent();
@@ -189,7 +189,7 @@ public class CitaService {
 	public ResponseEntity<Map<String, Object>> busquedaCitasSpec(CitaFilter request, PaginationInfo paginationInfo) throws Exception{
 		
 		List<Cita> cits = new ArrayList<Cita>();
-		Pageable paging = PageRequest.of(  paginationInfo.getPageNo(), paginationInfo.getPageSize());
+		Pageable paging = PageRequest.of(  paginationInfo.getPage(), paginationInfo.getPageSize());
 		Page<Cita> pageCits = citaRepository.findAll(citaSpecification.getSpeCitas(request, paginationInfo.getSortBy()), paging);
 		
 		cits = pageCits.getContent();

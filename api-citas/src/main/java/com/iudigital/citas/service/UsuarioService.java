@@ -105,7 +105,7 @@ public class UsuarioService implements UserDetailsService{
 	
 
 	public List<Usuario> getSpecList(UsuarioFilter request, PaginationInfo paginationInfo) throws Exception{
-		Pageable paging = PageRequest.of(paginationInfo.getPageNo() - 1, paginationInfo.getPageSize());
+		Pageable paging = PageRequest.of(paginationInfo.getPage(), paginationInfo.getPageSize());
 		Page<Usuario> pages = usuarioRepository.findAll(usuarioSpecification.getUsers(request, paginationInfo.getSortBy()), paging);
 
 		return pages.getContent();

@@ -325,7 +325,7 @@ public class CitaServiceTest {
 		CitaFilter citaFilter1 = new CitaFilter();
 		citaFilter1.setEstadoPago(EstadoPago.PAGADA);
 		PaginationInfo paginationInfo1 = new PaginationInfo();
-		paginationInfo1.setPageNo(1);
+		paginationInfo1.setPage(1);
 		paginationInfo1.setPageSize(1);
 		paginationInfo1.setSortBy("idCita");
 	

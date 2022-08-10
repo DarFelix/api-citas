@@ -111,7 +111,7 @@ public class UsuarioServiceTest {
 		UsuarioFilter usuarioFilter1 = new UsuarioFilter();
 		usuarioFilter1.setText("Carl");
 		PaginationInfo paginationInfo1 = new PaginationInfo();
-		paginationInfo1.setPageNo(1);
+		paginationInfo1.setPage(1);
 		paginationInfo1.setPageSize(1);
 		paginationInfo1.setSortBy("idUsuario");
 

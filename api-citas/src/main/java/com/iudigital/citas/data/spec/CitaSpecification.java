@@ -1,5 +1,8 @@
 package com.iudigital.citas.data.spec;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,8 +24,19 @@ public class CitaSpecification {
 			List<Predicate> predicates = new ArrayList<>();
 
 			if (request.getFechaCita() != null) {
-				predicates.add(criteriaBuilder.equal(root.get("fechaCita"), request.getFechaCita()));
+				
+				LocalDate datePart = LocalDate.parse(request.getFechaCita());
+				LocalTime timeInit = LocalTime.parse("00:00:00");
+				LocalTime timeFin = LocalTime.parse("23:59:59");
+				LocalDateTime ini = LocalDateTime.of(datePart, timeInit);
+				LocalDateTime fin = LocalDateTime.of(datePart, timeFin);
+				
+				
+				predicates.add(criteriaBuilder.between(root.get("fechaCita"), ini, fin));
+				System.out.println(request.getFechaCita());
 			}
+			
+			//predicates.add(criteriaBuilder.between(root.get("fechaCita"), request.getFechaCita(), request.getFechaCita()));
 
 			if (request.getText() != null && !request.getText().isEmpty()) {
 				predicates.add(criteriaBuilder.or(
