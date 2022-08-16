@@ -60,8 +60,8 @@ public class Usuario {
 	@Column(name = "estado_usuario")
 	private EstadoUsuario estadoUsuario;
 
-	@ManyToOne(optional = true, fetch = FetchType.EAGER)
-	@JoinColumn(columnDefinition="integer", nullable = true, name = "especialidad_id" )
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "especialidad_id" )
 	private Especialidad especialidad;
 
 	@Column(name = "fecha_creacion")
@@ -180,6 +180,15 @@ public class Usuario {
 
 	public void setFechaActualizacion(LocalDateTime fechaActualizacion) {
 		this.fechaActualizacion = fechaActualizacion;
+	}
+
+	@Override
+	public String toString() {
+		return "Usuario [idUsuario=" + idUsuario + ", nombres=" + nombres + ", apellidos=" + apellidos + ", tipoDoc="
+				+ tipoDoc + ", numeroDoc=" + numeroDoc + ", fechaNacimiento=" + fechaNacimiento + ", telefono="
+				+ telefono + ", correo=" + correo + ", pass=" + pass + ", rol=" + rol + ", estadoUsuario="
+				+ estadoUsuario + ", especialidad=" + especialidad + ", fechaCreacion=" + fechaCreacion
+				+ ", fechaActualizacion=" + fechaActualizacion + "]";
 	}
 
 }

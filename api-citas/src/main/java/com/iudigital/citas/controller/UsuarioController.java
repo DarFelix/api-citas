@@ -45,6 +45,14 @@ public class UsuarioController {
 	public void createMedico(@RequestBody UsuarioDTO usuarioDTO) {
 		usuarioService.createUsuario(usuarioConverter.convertUsuarioDTOToUsuario(usuarioDTO));
 	}
+	
+	@PostMapping
+	@ResponseStatus(HttpStatus.CREATED)
+	@PreAuthorize("hasRole('ADMIN')")
+	@ApiOperation(value = "Crear usuario", tags = "Usuario", notes = "Crear usuario  en el sistema.")
+	public void createUser(@RequestBody UsuarioDTO usuarioDTO) {
+		usuarioService.createUsuario(usuarioConverter.convertUsuarioDTOToUsuario(usuarioDTO));
+	}
 
 	@GetMapping
 	@PreAuthorize("hasRole('ADMIN') OR hasRole('MEDIC')")

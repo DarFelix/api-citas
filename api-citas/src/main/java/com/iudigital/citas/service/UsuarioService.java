@@ -39,12 +39,11 @@ public class UsuarioService implements UserDetailsService{
 		
 		
 		String pw = passwordEncoder.encode(usuario.getPass());
-		System.out.println(pw);
 		usuario.setPass(pw);
 		
 		usuario.setEstadoUsuario(EstadoUsuario.ACTIVO);
 		usuario.setFechaCreacion(LocalDateTime.now());
-	
+		System.out.println(usuario);
 		usuarioRepository.save(usuario);
 
 	}
