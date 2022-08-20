@@ -68,6 +68,7 @@ public class UsuarioService implements UserDetailsService{
 			usuarioUpdate.setCorreo(usuario.getCorreo());
 			usuarioUpdate.setPass(usuario.getPass());
 			usuarioUpdate.setEstadoUsuario(usuario.getEstadoUsuario());
+			usuarioUpdate.setRol(usuario.getRol());
 			usuarioUpdate.setEspecialidad(usuario.getEspecialidad());
 
 			usuarioUpdate.setFechaActualizacion(LocalDateTime.now());

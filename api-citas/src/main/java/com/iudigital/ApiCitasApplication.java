@@ -17,7 +17,8 @@ public class ApiCitasApplication {
 
 		SpringApplication.run(ApiCitasApplication.class, args);
 
-		LOGGER.error("Prueba en archivo citasLog !!!");
+		LOGGER.error("Prueba error log4j2 !!!");
+		LOGGER.warn("prueba warn log4j2!");
 	}
 
 }
